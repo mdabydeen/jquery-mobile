@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 </head>
@@ -24,11 +24,9 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Input buttons</h1>
+		<h1>Input buttons <a href="http://api.jquerymobile.com/button/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
 		<p>Examples of how to style input buttons; <code>input</code> elements with <code>type="button"</code>, <code>type="submit"</code>, or <code>type="reset"</code>. See <a href="../button-markup/">button markup</a> for examples of <code>a</code> and <code>button</code> elements.</p>
-
-		<p>Note that in 1.4 <code>data-</code> attributes will still work, but the style options are deprecated.</p>
 
 		<h2>Default</h2>
 
@@ -158,13 +156,6 @@
 				<input type="button" data-icon="delete" data-iconpos="top" value="Top">
 				<input type="button" data-icon="delete" data-iconpos="bottom" value="Bottom">
 				<input type="button" data-icon="delete" data-iconpos="notext" value="Icon only">
-			</form>
-		</div><!--/demo-html -->
-
-		<p>Inline:</p>
-
-		<div data-demo-html="true">
-			<form>
 				<div class="ui-input-btn ui-btn ui-icon-delete ui-btn-icon-left">
 					Enhanced - Left
 					<input type="button" data-enhanced="true" value="Enhanced - Left">
@@ -185,16 +176,15 @@
 					Enhanced - Icon only
 					<input type="button" data-enhanced="true" value="Enhanced - Icon only">
 				</div>
-			<form>
+			</form>
 		</div><!--/demo-html -->
 
 		<h2>Icon shadow</h2>
 
 		<div data-demo-html="true">
 			<form>
-				<input type="button" data-icon="delete" data-iconshadow="true" value="Input">
-				<p>Theme B:</p>
-				<div class="ui-input-btn ui-btn ui-icon-delete ui-btn-icon-left ui-shadow-icon ui-btn-b">
+				<input type="button" data-theme="b" data-icon="delete" data-iconshadow="true" value="Input">
+				<div class="ui-input-btn ui-btn ui-btn-b ui-icon-delete ui-btn-icon-left ui-shadow-icon">
 					Enhanced
 					<input type="button" data-enhanced="true" value="Enhanced">
 				</div>
@@ -229,7 +219,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>
@@ -238,4 +228,3 @@
 
 </body>
 </html>
-

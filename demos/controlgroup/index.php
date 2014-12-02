@@ -8,11 +8,17 @@
 	    <link rel="stylesheet" href="../_assets/css/jqm-demos.css">
 	    <link rel="shortcut icon" href="../favicon.ico">
 	    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-	    <script src="../../js/jquery.js"></script>
+	    <script src="../../external/jquery/jquery.js"></script>
 	    <script src="../_assets/js/"></script>
 	    <script src="../../js/"></script>
 	    <style>
 	        #demo-borders .ui-collapsible .ui-collapsible-heading .ui-btn { border-top-width: 1px !important; }
+	    </style>
+	    <style id="textinput-controlgroup">
+			.controlgroup-textinput{
+				padding-top:.22em;
+				padding-bottom:.22em;
+			}
 	    </style>
 	</head>
 	<body>
@@ -27,7 +33,7 @@
 
 	    <div role="main" class="ui-content jqm-content">
 
-        <h1>Controlgroup</h1>
+        <h1>Controlgroup <a href="http://api.jquerymobile.com/controlgroup/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
         <p>Controlgroups are used to visually group a set of buttons to form a single block that looks contained like a navigation component.
         </p>
@@ -350,6 +356,31 @@
 					</form>
 				</div><!--/demo-html -->
 
+				<h2>Textinputs</h2>
+				<p>While textinputs are not officially supported by the controlgroup they can be made to work with some simple css.</p>
+				<p>To make this work you will need to add one css rule and use textinput's wrapperClass option to set two classes on the textinput wrapper.</p>
+				<div data-demo-html="true" data-demo-css="#textinput-controlgroup">
+					<label for="currency-controlgroup">Value</label>
+					<div data-role="controlgroup" data-type="horizontal">
+						<select>
+							<option>$</option>
+							<option>€</option>
+							<option>£</option>
+							<option>¥</option>
+							<option>₩</option>
+							<option>₹</option>
+						</select>
+						<input id="currency-controlgroup" type="text" data-wrapper-class="controlgroup-textinput ui-btn">
+						<button>.00</button>
+					</div>
+					<label for="search-control-group">Search</label>
+					<div data-role="controlgroup" data-type="horizontal">
+						<input type="text" id="search-control-group" data-wrapper-class="controlgroup-textinput ui-btn">
+						<button>Submit</button>
+						<button>Reset</button>
+					</div>
+				</div>
+
 		<h2>Pre-rendered markup</h2>
 		<p>You can supply pre-rendered markup for any controlgroup to save startup time. The example below illustrates the markup you have to provide for a pre-rendered controlgroup. Note that the widgets inside the controlgroup need not necessarily be pre-rendered.</p>
 		<div data-demo-html="true">
@@ -359,9 +390,9 @@
 				</div>
 				<div class="ui-controlgroup-controls ui-shadow">
 					<label for="pre-rendered-cb-1" class="ui-first-child">Checkbox 1</label>
-					<input type="checkbox" id="pre-rendered-cb-1" name="pre-rendered-cb-1" value="1"></input>
+					<input type="checkbox" id="pre-rendered-cb-1" name="pre-rendered-cb-1" value="1">
 					<label for="pre-rendered-cb-2" class="ui-last-child">Checkbox 2</label>
-					<input type="checkbox" id="pre-rendered-cb-2" name="pre-rendered-cb-2" value="2"></input>
+					<input type="checkbox" id="pre-rendered-cb-2" name="pre-rendered-cb-2" value="2">
 				</div>
 			</div>
 		</div>
@@ -372,7 +403,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

@@ -4,6 +4,9 @@
 	border-width: 1px;
 	border-style: solid;
 }
+.ui-mini {
+	margin: .446em;
+}
 .ui-input-text input,
 .ui-input-search input,
 textarea.ui-input-text {
@@ -13,7 +16,6 @@ textarea.ui-input-text {
 	width: 100%;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
-	-ms-box-sizing: border-box;
 	box-sizing: border-box;
 	outline: 0;
 }
@@ -51,7 +53,10 @@ textarea.ui-mini {
 }
 /* Padding on the div instead of input because of browser spinners etc. */
 .ui-input-has-clear {
-	padding-right: 2.25em;
+	padding-right: 2.375em;
+}
+.ui-mini.ui-input-has-clear {
+	padding-right: 2.923em;
 }
 .ui-input-has-clear input {
 	padding-right: 0;

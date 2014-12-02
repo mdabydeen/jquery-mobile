@@ -97,11 +97,28 @@
 	});
 
 	test( "data-clear-btn adds clear button to text inputs", function() {
-		ok( $( '#text-input-clear-btn' ).next().is( 'a.ui-input-clear' ), "data-clear-btn adds clear button to text inputs" );
+		ok( $( '#text-input-clear-btn' ).next()
+			.is( 'a.ui-input-clear[tabindex="-1"][aria-hidden="true"]' ),
+			"correctly marked up clear button is present" );
 	});
 
 	test( "data-clear-btn does not add clear button to textarea", function() {
 		ok( ! $( "#textarea-clear-btn" ).next().is( "a.ui-input-clear" ), "data-clear-btn does not add clear button to textarea" );
+	});
+
+	test( "data-clear-btn does not add clear button to textarea", function() {
+		deepEqual( $( "#textarea-clear-btn" ).children( "a" ).length, 0,
+			"No anchors have been inserted as children of the data-clear-btn textarea element" );
+	});
+
+	test( "data-clear-btn does not add clear button to slider input", function() {
+		ok( ! $( "#slider-input" ).next().is( "a.ui-input-clear" ),
+			"data-clear-btn does not add clear button to slider input" );
+	});
+
+	test( "data-clear-btn does not add clear button to slider input", function() {
+		deepEqual( $( "#slider-input" ).children( "a" ).length, 0,
+			"No anchors have been inserted as children of the data-clear-btn input element" );
 	});
 
 	test( "data-clear-btn does not add native clear button to input button (IE10)", function() {
@@ -123,6 +140,45 @@
 		d = e.height() > h;
 
 		ok( !d, "native clear button is still visible" );
+	});
+
+	test( "clearBtn option works at runtime", function() {
+		var input = $( "#test-clear-btn-option" );
+
+		deepEqual( input.siblings( "a" ).length, 0,
+			"input initially has no clear button" );
+		deepEqual( input.parent().hasClass( "ui-input-has-clear" ), false,
+			"wrapper does not initially have class 'ui-input-has-clear'" );
+
+		input.textinput( "option", "clearBtn", true );
+
+		deepEqual( input.siblings( "a" ).length, 1,
+			"turning on clearBtn option causes an anchor to be added" );
+		deepEqual( input.parent().hasClass( "ui-input-has-clear" ), true,
+			"turning on clearBtn option causes 'ui-input-has-clear' to be " +
+				"added to wrapper" );
+
+		input.textinput( "option", "clearBtn", false );
+
+		deepEqual( input.siblings( "a" ).length, 0,
+			"turning off clearBtn removes clear button anchor" );
+		deepEqual( input.parent().hasClass( "ui-input-has-clear" ), false,
+			"turning off clearBtn removes wrapper class 'ui-input-has-clear'" );
+	});
+
+	test( "cannot inject script via clearBtnText option", function() {
+		deepEqual( !!$.clearBtnTextScriptInjected, false,
+			"no script was injected via clearBtnText option" );
+	});
+
+	test( "textinput is destroyed correctly", function() {
+		var originalDOM = $( "#destroy-test-container" ).clone(),
+			entry = $( "#destroy-test" );
+
+		entry.textinput().textinput( "destroy" );
+
+		deepEqual( $.testHelper.domEqual( originalDOM, $( "#destroy-test-container" ) ), true,
+			"Original DOM is restored after textinput destruction" );
 	});
 
 })(jQuery);

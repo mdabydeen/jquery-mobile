@@ -4,7 +4,8 @@
 //>>group: Navigation
 define([
 	"jquery",
-	"./../jquery.mobile.ns" ], function( jQuery ) {
+	"./path",
+	"./../ns" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 
 (function( $, undefined ) {
@@ -45,13 +46,14 @@ define([
 			page.find( base.linkSelector ).each(function( i, link ) {
 				var thisAttr = $( link ).is( "[href]" ) ? "href" :
 					$( link ).is( "[src]" ) ? "src" : "action",
+				theLocation = $.mobile.path.parseLocation(),
 				thisUrl = $( link ).attr( thisAttr );
 
 				// XXX_jblas: We need to fix this so that it removes the document
 				//            base URL, and then prepends with the new page URL.
 				// if full path exists and is same, chop it - helps IE out
-				thisUrl = thisUrl.replace( location.protocol + "//" +
-					location.host + location.pathname, "" );
+				thisUrl = thisUrl.replace( theLocation.protocol + theLocation.doubleSlash +
+					theLocation.host + theLocation.pathname, "" );
 
 				if ( !/^(\w+:|#|\/)/.test( thisUrl ) ) {
 					$( link ).attr( thisAttr, newPath + thisUrl );

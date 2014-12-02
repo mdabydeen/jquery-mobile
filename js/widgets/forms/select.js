@@ -5,7 +5,7 @@
 //>>css.structure: ../css/structure/jquery.mobile.forms.select.css
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
-define( [ "jquery", "../../jquery.mobile.core", "../../jquery.mobile.widget", "../../jquery.mobile.zoom", "./reset" ], function( jQuery ) {
+define( [ "jquery", "../../core", "../../widget", "../../zoom", "./reset" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -143,7 +143,9 @@ $.widget( "mobile.selectmenu", $.extend( {
 			self.refresh();
 
 			if ( !!options.nativeMenu ) {
-				this.blur();
+				self._delay( function() {
+					self.select.blur();
+				});
 			}
 		});
 
@@ -244,7 +246,9 @@ $.widget( "mobile.selectmenu", $.extend( {
 			if ( text ) {
 				span.text( text );
 			} else {
-				span.html( "&nbsp;" );
+
+				// Set the contents to &nbsp; which we write as &#160; to be XHTML compliant - see gh-6699
+				span.html( "&#160;" );
 			}
 
 			// TODO possibly aggregate multiple select option classes

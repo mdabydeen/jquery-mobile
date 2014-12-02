@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script>
 		// Bind to "mobileinit" before you load jquery.mobile.js
@@ -44,7 +44,7 @@
 
         <h1>Custom autodivider selector</h1>
 
-        <p>By default the the autodividers plugin will use the first character of a list item as selector. The option <code>autodividersSelector</code> allows you to return a different string. In this example we show you how to set an autodividers selector of "0-9" for list items that contain numbers so you can group them.</p>
+        <p>By default the autodividers plugin will use the first character of a list item as selector. The option <code>autodividersSelector</code> allows you to return a different string. In this example we show you how to set an autodividers selector of "0-9" for list items that contain numbers so you can group them.</p>
 
         <div data-demo-html="true" data-demo-js="true">
             <ul data-role="listview" data-autodividers="true" data-inset="true">
@@ -73,7 +73,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

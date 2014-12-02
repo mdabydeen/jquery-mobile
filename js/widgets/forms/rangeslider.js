@@ -6,9 +6,10 @@
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
 define( [ "jquery",
-	"../../jquery.mobile.core",
-	"../../jquery.mobile.widget",
+	"../../core",
+	"../../widget",
 	"./textinput",
+	"../../vmouse",
 	"./reset",
 	"./slider" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
@@ -90,6 +91,7 @@ define( [ "jquery",
 			//if the first handle is dragged send the event to the first slider
 			$.data( this._inputFirst.get(0), "mobile-slider" ).dragging = true;
 			$.data( this._inputFirst.get(0), "mobile-slider" ).refresh( event );
+			$.data( this._inputFirst.get(0), "mobile-slider" )._trigger( "start" );
 			return false;
 		},
 
@@ -142,6 +144,11 @@ define( [ "jquery",
 			if ( options.highlight !== undefined ) {
 				this._setHighlight( options.highlight );
 			}
+
+			if ( options.disabled !== undefined ) {
+				this._setDisabled( options.disabled );
+			}
+
 			this._super( options );
 			this.refresh();
 		},
@@ -246,6 +253,11 @@ define( [ "jquery",
 		_setHighlight: function( value ) {
 			this._inputFirst.slider( "option", "highlight", value );
 			this._inputLast.slider( "option", "highlight", value );
+		},
+
+		_setDisabled: function( value ) {
+			this._inputFirst.prop( "disabled", value );
+			this._inputLast.prop( "disabled", value );
 		},
 
 		_destroy: function() {

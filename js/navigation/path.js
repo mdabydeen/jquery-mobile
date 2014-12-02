@@ -4,7 +4,7 @@
 //>>group: Navigation
 define([
 	"jquery",
-	"./../jquery.mobile.ns" ], function( jQuery ) {
+	"./../ns" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 
 (function( $, undefined ) {
@@ -41,19 +41,34 @@ define([
 			urlParseRE: /^\s*(((([^:\/#\?]+:)?(?:(\/\/)((?:(([^:@\/#\?]+)(?:\:([^:@\/#\?]+))?)@)?(([^:\/#\?\]\[]+|\[[^\/\]@#?]+\])(?:\:([0-9]+))?))?)?)?((\/?(?:[^\/\?#]+\/+)*)([^\?#]*)))?(\?[^#]+)?)(#.*)?/,
 
 			// Abstraction to address xss (Issue #4787) by removing the authority in
-			// browsers that auto	decode it. All references to location.href should be
+			// browsers that auto-decode it. All references to location.href should be
 			// replaced with a call to this method so that it can be dealt with properly here
 			getLocation: function( url ) {
-				var uri = url ? this.parseUrl( url ) : location,
-					hash = this.parseUrl( url || location.href ).hash;
+				var parsedUrl = this.parseUrl( url || location.href ),
+					uri = url ? parsedUrl : location,
+
+					// Make sure to parse the url or the location object for the hash because using
+					// location.hash is autodecoded in firefox, the rest of the url should be from
+					// the object (location unless we're testing) to avoid the inclusion of the
+					// authority
+					hash = parsedUrl.hash;
 
 				// mimic the browser with an empty string when the hash is empty
 				hash = hash === "#" ? "" : hash;
 
-				// Make sure to parse the url or the location object for the hash because using location.hash
-				// is autodecoded in firefox, the rest of the url should be from the object (location unless
-				// we're testing) to avoid the inclusion of the authority
-				return uri.protocol + "//" + uri.host + uri.pathname + uri.search + hash;
+				return uri.protocol +
+					parsedUrl.doubleSlash +
+					uri.host +
+
+					// The pathname must start with a slash if there's a protocol, because you
+					// can't have a protocol followed by a relative path. Also, it's impossible to
+					// calculate absolute URLs from relative ones if the absolute one doesn't have
+					// a leading "/".
+					( ( uri.protocol !== "" && uri.pathname.substring( 0, 1 ) !== "/" ) ?
+						"/" : "" ) +
+					uri.pathname +
+					uri.search +
+					hash;
 			},
 
 			//return the original document url
@@ -139,7 +154,8 @@ define([
 
 			//Returns true if both urls have the same domain.
 			isSameDomain: function( absUrl1, absUrl2 ) {
-				return path.parseUrl( absUrl1 ).domain === path.parseUrl( absUrl2 ).domain;
+				return path.parseUrl( absUrl1 ).domain.toLowerCase() ===
+					path.parseUrl( absUrl2 ).domain.toLowerCase();
 			},
 
 			//Returns true for any relative variant.
@@ -186,19 +202,21 @@ define([
 			},
 
 			convertUrlToDataUrl: function( absUrl ) {
-				var u = path.parseUrl( absUrl );
+				var result = absUrl,
+					u = path.parseUrl( absUrl );
+
 				if ( path.isEmbeddedPage( u ) ) {
 					// For embedded pages, remove the dialog hash key as in getFilePath(),
 					// and remove otherwise the Data Url won't match the id of the embedded Page.
-					return u.hash
+					result = u.hash
 						.split( dialogHashKey )[0]
 						.replace( /^#/, "" )
 						.replace( /\?.*$/, "" );
 				} else if ( path.isSameDomain( u, this.documentBase ) ) {
-					return u.hrefNoHash.replace( this.documentBase.domain, "" ).split( dialogHashKey )[0];
+					result = u.hrefNoHash.replace( this.documentBase.domain, "" ).split( dialogHashKey )[0];
 				}
 
-				return window.decodeURIComponent(absUrl);
+				return window.decodeURIComponent( result );
 			},
 
 			//get path from current hash, or from a file path
@@ -247,7 +265,9 @@ define([
 			//could be mailto, etc
 			isExternal: function( url ) {
 				var u = path.parseUrl( url );
-				return u.protocol && u.domain !== this.documentUrl.domain ? true : false;
+
+				return !!( u.protocol &&
+					( u.domain.toLowerCase() !== this.documentUrl.domain.toLowerCase() ) );
 			},
 
 			hasProtocol: function( url ) {
@@ -269,14 +289,25 @@ define([
 			},
 
 			squash: function( url, resolutionUrl ) {
-				var href, cleanedUrl, search, stateIndex,
+				var href, cleanedUrl, search, stateIndex, docUrl,
 					isPath = this.isPath( url ),
 					uri = this.parseUrl( url ),
 					preservedHash = uri.hash,
 					uiState = "";
 
-				// produce a url against which we can resole the provided path
-				resolutionUrl = resolutionUrl || (path.isPath(url) ? path.getLocation() : path.getDocumentUrl());
+				// produce a url against which we can resolve the provided path
+				if ( !resolutionUrl ) {
+					if ( isPath ) {
+						resolutionUrl = path.getLocation();
+					} else {
+						docUrl = path.getDocumentUrl( true );
+						if ( path.isPath( docUrl.hash ) ) {
+							resolutionUrl = path.squash( docUrl.href );
+						} else {
+							resolutionUrl = docUrl.href;
+						}
+					}
+				}
 
 				// If the url is anything but a simple string, remove any preceding hash
 				// eg #foo/bar -> foo/bar
@@ -323,7 +354,8 @@ define([
 
 					// reconstruct each of the pieces with the new search string and hash
 					href = path.parseUrl( href );
-					href = href.protocol + "//" + href.host + href.pathname + search + preservedHash;
+					href = href.protocol + href.doubleSlash + href.host + href.pathname + search +
+						preservedHash;
 				} else {
 					href += href.indexOf( "#" ) > -1 ? uiState : "#" + uiState;
 				}
@@ -344,11 +376,10 @@ define([
 				return ( hasHash ? "#" : "" ) + hash.replace( /([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, "\\$1" );
 			},
 
-			// return the substring of a filepath before the sub-page key, for making
-			// a server request
+			// return the substring of a filepath before the dialogHashKey, for making a server
+			// request
 			getFilePath: function( path ) {
-				var splitkey = "&" + $.mobile.subPageUrlKey;
-				return path && path.split( splitkey )[0].split( dialogHashKey )[0];
+				return path && path.split( dialogHashKey )[0];
 			},
 
 			// check if the specified url refers to the first page in the main

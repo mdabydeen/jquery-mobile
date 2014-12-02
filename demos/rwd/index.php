@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 </head>
@@ -29,7 +29,7 @@
       	<p>Responsive web design (RWD) is a design and technical approach that aims to adapt the layout and interaction of a site or app to work optimally across a wide range of device resolutions, screen densities and interaction modes with the same underlying codebase. The framework has a number of responsive widgets: <a href="../grids/">responsive grids</a>, <a href="../table-reflow/">reflow tables</a> and <a href="../table-column-toggle/">column chooser tables</a>, and <a href="../panel/">panels</a>.</p>
 
 		<h2>RWD basics</h2>
-      	<p>RWD has three key elements:<p>
+      	<p>RWD has three key elements:</p>
       	<ul>
       		<li><strong>CSS media queries</strong>, used to target styles to specific device characteristics such as screen width breakpoint or resolution.</li>
       		<li><strong>A fluid grid</strong>, that specifies elements and widgets in flexible units with the goal of making them flow to fill their containers.</li>
@@ -50,19 +50,19 @@
 
       	<p>When working with RWD, it's very important to consider performance to ensure that you're not simply taking a heavy desktop site and shrinking it down to mobile screens. We recommend following a "mobile-first" approach  to keep development focused on reducing bandwidth, server requests and optimizing source order.</p>
 
-      	<p>When building a page, start by creating the lightest and most semantic HTML possible. Think about how the source order of the markup would work if you didn't have CSS or JS. Do not include code that is only needed for larger viewports and hide it at smaller widths. Instead, use AJAX to conditionally load these assets when larger screens are detected via JS.</p>
+      	<p>When building a page, start by creating the lightest and most semantic HTML possible. Think about how the source order of the markup would work if you didn't have CSS or JS. Do not include code that is only needed for larger viewports and hide it at smaller widths. Instead, use Ajax to conditionally load these assets when larger screens are detected via JS.</p>
 
       	<p>When writing CSS for a responsive site or app, it's usually most efficient to write all the core typography and basic style elements outside of a media query to form the styles for the smallest devices, such as phones. This is a good approach because the majority of these core styles are usually also shared at greater widths, albeit in a different layout and it leverages the cascading power of CSS. Build up breakpoints using multiple <code>min-width</code> media queries to layer in additional style rules that should only apply above a certain screen width.</p>
 
-      	<p>For images in your pages, we recommend starting with images sized for mobile screens in the markup. It doesn't make sense to serve a 1,000 pixel wide photo to a smartphone with a 480 pixel max resolution because this is a waste of bandwidth and memory. Instead, include an image targeted for a mobile size. Add a <code>width: 100%;</code> style rule to make images scale to the page or container, but not larger because this would look blurry. </p>
+      	<p>For images in your pages, we recommend starting with images sized for mobile screens in the markup. It doesn't make sense to serve a 1,000 pixel wide photo to a smartphone with a 480 pixel max resolution because this is a waste of bandwidth and memory. Instead, include an image targeted for a mobile size. Add a <code>width: 100%;</code> style rule to make images scale to the page or container, but not larger because this would look blurry.</p>
 
       	<p>For larger or higher resolution screens, there is a wide range of JS-based techniques and services to conditionally load a higher quality image. The forthcoming <code>picture</code>element will address the need to handle multiple image sources natively in HTML and can be used today with a polyfill script.</p>
 
-      	<p>Always look for ways to limit the number of server requests on a page by concatenating files into a single request and always use minification and compression (gzip). </p>
+      	<p>Always look for ways to limit the number of server requests on a page by concatenating files into a single request and always use minification and compression (gzip).</p>
 
 		<h2>Responsive in jQuery Mobile</h2>
 
-		<p>jQuery Mobile has always been designed to work within a responsive context and our docs and forms had a few responsive elements from the very start. All the widgets are built to be 100% flexible in width to fit easily inside any responsive layout system you choose to build. </p>
+		<p>jQuery Mobile has always been designed to work within a responsive context and our docs and forms had a few responsive elements from the very start. All the widgets are built to be 100% flexible in width to fit easily inside any responsive layout system you choose to build.</p>
 
 		<p>Here is a checklist of RWD tips to keep in mind:</p>
 
@@ -114,7 +114,7 @@ a:link { color:purple; }
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

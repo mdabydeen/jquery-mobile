@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<script>
@@ -17,11 +17,11 @@
 			$( "[data-role='header'], [data-role='footer']" ).toolbar();
 		});
 		// Update the contents of the toolbars
-		$( document ).on( "pageshow", "[data-role='page']", function() {
+		$( document ).on( "pagecontainerchange", function() {
 			// Each of the four pages in this demo has a data-title attribute
 			// which value is equal to the text of the nav button
 			// For example, on first page: <div data-role="page" data-title="Info">
-			var current = $( this ).jqmData( "title" );
+			var current = $( ".ui-page-active" ).jqmData( "title" );
 			// Change the heading
 			$( "[data-role='header'] h1" ).text( current );
 			// Remove active class from nav buttons
@@ -86,13 +86,13 @@
 					<p class="ui-li-aside"><strong>5:52</strong>AM</p>
 				</a></li>
 					<li data-role="list-divider">Tuesday, October 5, 2010 <span class="ui-li-count">3</span></li>
-					<li><a href="index.html">
+					<li><a href="index.php">
 						<h3>Angela Smith</h3>
 					<p><strong>Link Request</strong></p>
 					<p>My name is Angela Smith, SEO Consultant. I've greatly enjoyed looking through your site and I was wondering if you'd be interested in providing a link</p>
 						<p class="ui-li-aside"><strong>6:24</strong>AM</p>
 					</a></li>
-					<li><a href="index.html">
+					<li><a href="index.php">
 						<h3>Mike Taylor</h3>
 					<p><strong>This weekend in Maine</strong></p>
 					<p>Sounds good, let me check into our plans.</p>

@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<style id="wrap">
@@ -76,7 +76,7 @@
         <div data-demo-html="true" data-demo-css="#wrap">
             <div class="ui-grid-b">
                 <div class="ui-block-a"><a href="#" class="ui-shadow ui-btn ui-corner-all ui-mini">Anchor</a></div>
-                <div class="ui-block-b"><div class="button-wrap"><button  class="ui-shadow ui-btn ui-corner-all ui-mini">Button</button></div></div>
+                <div class="ui-block-b"><div class="button-wrap"><button class="ui-shadow ui-btn ui-corner-all ui-mini">Button</button></div></div>
                 <div class="ui-block-c"><input type="button" value="Input" data-mini="true"></div>
             </div>
 			<form class="ui-grid-b">
@@ -85,18 +85,18 @@
 					<select id="grid-select-2" name="grid-select-2" data-shadow="false" data-mini="true">
 						<option>Select</option>
 						<option value="1">The 1st Option</option>
-						<option value="2">The 2nt Option</option>
+						<option value="2">The 2nd Option</option>
 						<option value="3">The 3rd Option</option>
 						<option value="4">The 4th Option</option>
 					</select>
 				</div>
 				<div class="ui-block-b">
 					<label for="grid-checkbox-2">Checkbox</label>
-					<input type="checkbox" id="grid-checkbox-2" name="grid-checkbox-2" data-mini="true">
+					<input type="checkbox" id="grid-checkbox-2" name="grid-checkbox-2" data-wrapper-class="mini">
 				</div>
 				<div class="ui-block-c">
 					<label for="grid-radio-2">Radio</label>
-					<input type="radio" id="grid-radio-2" name="grid-radio-2" data-mini="true">
+					<input type="radio" id="grid-radio-2" name="grid-radio-2" data-wrapper-class="mini">
 				</div>
 			</form>
         </div><!--/demo-html -->
@@ -142,7 +142,7 @@
                 <div class="ui-block-b"><a href="#" class="ui-btn ui-shadow ui-corner-all">Grid A</a></div>
             </div>
             <div class="ui-grid-solo">
-                <a href="#" class="ui-btn ui-shadow ui-corner-all">Grid Solo</a>
+                <div class="ui-block-a"><a href="#" class="ui-btn ui-shadow ui-corner-all">Grid Solo</a></div>
             </div>
             <br>
             <a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-b">Outside the grid</a>
@@ -154,7 +154,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

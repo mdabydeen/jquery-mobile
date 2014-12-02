@@ -1,4 +1,4 @@
-// Turn off AJAX for local file browsing
+// Turn off Ajax for local file browsing
 if ( location.protocol.substr(0,4)  === 'file' ||
      location.protocol.substr(0,11) === '*-extension' ||
      location.protocol.substr(0,6)  === 'widget' ) {
@@ -36,7 +36,7 @@ if ( location.protocol.substr(0,4)  === 'file' ||
 
 			message
 			.append( "<h3>Note: Navigation may not work if viewed locally</h3>" )
-			.append( "<p>The AJAX-based navigation used throughout the jQuery Mobile docs may need to be viewed on a web server to work in certain browsers. If you see an error message when you click a link, please try a different browser.</p>" );
+			.append( "<p>The Ajax-based navigation used throughout the jQuery Mobile docs may need to be viewed on a web server to work in certain browsers. If you see an error message when you click a link, please try a different browser.</p>" );
 
 			$( document ).on( "pagecreate", function( event ) {
 				$( event.target ).append( message );
@@ -55,7 +55,10 @@ $( document ).on( "pagecreate", ".jqm-demos", function( event ) {
 		words = version.split( "-" ),
 		ver = words[0],
 		str = words[1] || "",
-		text = ver;
+		text = ver,
+		versionNumbers = ver.split( "." ),
+		apiVersion = versionNumbers[ 0 ] + "." + versionNumbers[ 1 ],
+		href;
 
 	// Insert jqm version in header
 	if ( str.indexOf( "rc" ) == -1 ) {
@@ -70,6 +73,15 @@ $( document ).on( "pagecreate", ".jqm-demos", function( event ) {
 
 	$( ".jqm-version" ).html( text );
 
+	// Insert version in API documentation links
+	if ( version !== "dev" ) {
+		$( ".jqm-api-docs-link" ).each(function() {
+			href = $( this ).attr( "href" ).replace( "api.jquerymobile.com/", "api.jquerymobile.com/" + apiVersion + "/" );
+
+			$( this ).attr( "href", href );
+		});
+	}
+
 	// Global navmenu panel
 	$( ".jqm-navmenu-panel ul" ).listview();
 
@@ -78,7 +90,7 @@ $( document ).on( "pagecreate", ".jqm-demos", function( event ) {
 	})
 
 	$( ".jqm-navmenu-link" ).on( "click", function() {
-		page.find( ".jqm-navmenu-panel" ).panel( "open" );
+		page.find( ".jqm-navmenu-panel:not(.jqm-panel-page-nav)" ).panel( "open" );
 	});
 
 	// Turn off autocomplete / correct for demos search
@@ -97,12 +109,12 @@ $( document ).on( "pagecreate", ".jqm-demos", function( event ) {
 		icon: false,
 		autodividers: true,
 		autodividersSelector: function ( li ) {
-    		return "";
-  		},
-  		arrowKeyNav: true,
-  		enterToNav: true,
-  		highlight: true,
-  		submitTo: searchUrl
+			return "";
+		},
+		arrowKeyNav: true,
+		enterToNav: true,
+		highlight: true,
+		submitTo: searchUrl
 	}).filterable();
 
 	// Initalize search page list and remove collapsibles
@@ -208,14 +220,15 @@ $( document ).on( "mobileinit", function() {
 
 		},
 		submitTo: function() {
-			var form = this.element.parent().find( "form" );
+			var url,
+				form = this.element.parent().find( "form" );
 
 			form.attr( "method", "get" )
 				.attr( "action", this.options.submitTo );
 
-			var url = this.options.submitTo + "?search=" + this.element.parent().find( "input" ).val();
+			url = this.options.submitTo + "?search=" + this.element.parent().find( "input" ).val();
 
-			$( ":mobile-pagecontainer" ).pagecontainer( "change", url );
+			window.location =  url;
 		},
 		enterToNav: function() {
 			var form = this.element.parent().find( "form" );
@@ -243,10 +256,11 @@ $( document ).on( "mobileinit", function() {
 			}
 		},
 		handleKeyUp: function( e ) {
-			var input = this.element.prev("form").find( "input" );
+			var search,
+				input = this.element.prev("form").find( "input" );
 
 			if ( e.which === $.ui.keyCode.DOWN ) {
-				if ( this.element.find( "li.ui-btn-active" ).length == 0 ) {
+				if ( this.element.find( "li.ui-btn-active" ).length === 0 ) {
 					this.element.find( "li:first" ).toggleClass( "ui-btn-active" ).find("a").toggleClass( "ui-btn-active" );
 				} else {
 					this.element.find( "li.ui-btn-active a" ).toggleClass( "ui-btn-active");
@@ -266,7 +280,7 @@ $( document ).on( "mobileinit", function() {
 				this.element.find( "li.ui-btn-active" ).removeClass( "ui-btn-active" );
 
 				if ( this.options.highlight ) {
-					var search = input.val();
+					search = input.val();
 
 					this.element.find( "li" ).each(function() {
 						$( this ).removeHighlight();

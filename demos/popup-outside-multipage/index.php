@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<script id="popup-outside-page-script">
-// Instantiate the popup on DOMReady, and enhance its contents
-$( function() {
+/* Instantiate the popup on DOMReady, and enhance its contents */
+$(function(){
 	$( "#popup-outside-page" ).enhanceWithin().popup();
 });
 	</script>
@@ -45,7 +45,6 @@ $( function() {
 
 		<p>You can reuse the same popup on multiple pages if you declare it as a direct child of the <code>body</code> element. It can then appear on any page in the document.</p>
 		<p>If you define the popup outside of any page, then you must take care to instantiate the popup widget yourself. You can do this as early as DOMReady, because the popup is not on any page.</p>
-		<p>If you wish the popup to be opened from a set of links, then you must also handle that manually, because automatic handling via <code>data-rel="popup"</code> is restricted to popups on the active page.</p>
 		<p>The example below illustrates the setup with two pages.</p>
 		<div data-demo-html="#popup-outside-page,#other-page,#third-page" data-demo-js="#popup-outside-page-script">
 			<a href="#popup-outside-page" data-rel="popup" class="ui-btn ui-btn-inline ui-corner-all">Menu</a>
@@ -57,7 +56,7 @@ $( function() {
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

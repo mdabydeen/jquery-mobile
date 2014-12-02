@@ -8,9 +8,44 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
+	<style id="custom-label-flipswitch">
+/* Custom indentations are needed because the length of custom labels differs from
+   the length of the standard labels */
+.custom-label-flipswitch.ui-flipswitch .ui-btn.ui-flipswitch-on {
+	text-indent: -3.4em;
+}
+.custom-label-flipswitch.ui-flipswitch .ui-flipswitch-off {
+	text-indent: 0.5em;
+}
+	</style>
+	<style id="custom-size-flipswitch">
+/* Custom indentations are needed because the length of custom labels differs from
+   the length of the standard labels */
+.custom-size-flipswitch.ui-flipswitch .ui-btn.ui-flipswitch-on {
+	text-indent: -5.9em;
+}
+.custom-size-flipswitch.ui-flipswitch .ui-flipswitch-off {
+	text-indent: 0.5em;
+}
+/* Custom widths are needed because the length of custom labels differs from
+   the length of the standard labels */
+.custom-size-flipswitch.ui-flipswitch {
+	width: 8.875em;
+}
+.custom-size-flipswitch.ui-flipswitch.ui-flipswitch-active {
+	padding-left: 7em;
+	width: 1.875em;
+}
+@media (min-width: 28em) {
+	/*Repeated from rule .ui-flipswitch above*/
+	.ui-field-contain > label + .custom-size-flipswitch.ui-flipswitch {
+		width: 1.875em;
+	}
+}
+	</style>
 </head>
 <body>
 <div data-role="page" class="jqm-demos" data-quicklinks="true">
@@ -24,7 +59,7 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Flip switch</h1>
+		<h1>Flip switch <a href="http://api.jquerymobile.com/flipswitch/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
 		<p>Flip switches are used for boolean style inputs like true/false or on/off in a compact UI element.
 			</p>
@@ -33,8 +68,26 @@
 
                 <div data-demo-html="true">
 				<form>
-                    <label for="flip-checkbox">Flip toggle switch checkbox:</label>
-                    <input type="checkbox" data-role="flipswitch" name="flip-checkbox" id="flip-checkbox">
+                    <label for="flip-checkbox-1">Flip toggle switch checkbox:</label>
+                    <input type="checkbox" data-role="flipswitch" name="flip-checkbox-1" id="flip-checkbox-1">
+				</form>
+                </div><!-- /demo-html -->
+
+			<h2>Basic checkbox switch with custom labels</h2>
+
+                <div data-demo-html="true" data-demo-css="#custom-label-flipswitch">
+				<form>
+                    <label for="flip-checkbox-2">Flip toggle switch checkbox:</label>
+                    <input type="checkbox" data-role="flipswitch" name="flip-checkbox-2" id="flip-checkbox-2" data-on-text="Light" data-off-text="Dark" data-wrapper-class="custom-label-flipswitch">
+				</form>
+                </div><!-- /demo-html -->
+
+			<h2>Basic checkbox switch with custom labels and custom size</h2>
+
+                <div data-demo-html="true" data-demo-css="#custom-size-flipswitch">
+				<form>
+                    <label for="flip-checkbox-3">Flip toggle switch checkbox:</label>
+                    <input type="checkbox" data-role="flipswitch" name="flip-checkbox-3" id="flip-checkbox-3" data-on-text="Assured" data-off-text="Uncertain" data-wrapper-class="custom-size-flipswitch">
 				</form>
                 </div><!-- /demo-html -->
 
@@ -42,8 +95,8 @@
 
                 <div data-demo-html="true">
                 <form>
-                    <label for="flip-checkbox">Flip toggle switch checkbox:</label>
-                    <input type="checkbox" data-role="flipswitch" name="flip-checkbox" id="flip-checkbox" checked>
+                    <label for="flip-checkbox-4">Flip toggle switch checkbox:</label>
+                    <input type="checkbox" data-role="flipswitch" name="flip-checkbox-4" id="flip-checkbox-4" checked>
                 </form>
                 </div><!-- /demo-html -->
 
@@ -163,7 +216,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

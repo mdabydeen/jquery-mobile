@@ -16,6 +16,69 @@ $.testHelper.delayStart();
 			$.testHelper.openPage( "#" + location.pathname + location.search );
 		};
 
+	test( "Absolute link with hash works", function() {
+		var defaultIsPrevented,
+			theLink = $( "#goToGoogle" ),
+			theClickHandler = function( event ) {
+				defaultIsPrevented = !!event.isDefaultPrevented();
+				if ( event.target === theLink[ 0 ] ) {
+					event.preventDefault();
+				}
+			};
+
+		$.mobile.document.one( "click", theClickHandler );
+
+		$( "#goToGoogle" ).click();
+
+		$.mobile.document.off( "click", theClickHandler );
+
+		deepEqual( defaultIsPrevented, false,
+			"Default is not prevented when clicking on external link with hash" );
+	});
+
+( function() {
+
+	var goUrl, originalGo,
+		navigatorPrototype = $.mobile.Navigator.prototype;
+
+	module( "Navigation encoding", {
+		setup: function() {
+			goUrl = undefined;
+			originalGo = navigatorPrototype.go;
+			navigatorPrototype.go = function( url ) {
+				goUrl = url;
+
+				return originalGo.apply( this, arguments );
+			};
+		},
+		teardown: function() {
+			navigatorPrototype.go = originalGo;
+		}
+	});
+
+	asyncTest( "Going to a page requiring url encoding works", function() {
+		var endingString = $( "#goToPercentPage" ).attr( "href" );
+
+		$.testHelper.pageSequence([
+			function() {
+				$( "#goToPercentPage" ).click();
+			},
+			function() {
+				deepEqual( $.mobile.activePage.children( "#percentPageChild" ).length, 1,
+					"Active page is the one loaded from the directory with a percent symbol" );
+
+				deepEqual(
+					goUrl.lastIndexOf( endingString ),
+					goUrl.length - endingString.length,
+					"Location ends in '" + endingString + "'" );
+				$.mobile.back();
+			},
+			start
+		]);
+	});
+
+})();
+
 	module('jquery.mobile.navigation.js', {
 		setup: function() {
 			$.mobile.navigate.history.stack = [];
@@ -41,17 +104,17 @@ $.testHelper.delayStart();
 			function(){
 				ok( $.mobile.activePage[0] === $( "#active-state-page1" )[ 0 ], "successful navigation to internal page." );
 
-				$.testHelper.openPage("#/tests/integration/navigation/external.html");
+				$.testHelper.openPage( "#" + $.mobile.path.parseLocation().directory + "external.html" );
 			},
 
 			function() {
-				ok( $.mobile.activePage.attr("id"), "external-test", "successful navigation to external page." );
+				deepEqual( $.mobile.activePage.attr("id"), "external-test", "successful navigation to external page." );
 				window.history.back();
 			},
 
 			function() {
 				ok( $.mobile.activePage[0] === $( "#active-state-page1" )[ 0 ], "successful navigation back to internal page." );
-				start( 1000 );
+				start();
 			}
 		]);
 	});
@@ -68,7 +131,7 @@ $.testHelper.delayStart();
 			},
 
 			function() {
-				start( 1000 );
+				start();
 			}
 		]);
 	});
@@ -88,7 +151,7 @@ $.testHelper.delayStart();
 			// external-test is *NOT* cached in the dom after transitioning away
 			function( timedOut ) {
 				deepEqual( $( "#external-test" ).length, 0 );
-				start( 1000 );
+				start();
 			}
 		]);
 	});
@@ -136,7 +199,7 @@ $.testHelper.delayStart();
 			function() {
 				deepEqual( $( "#external-test" ).length, 0, "#external-test is gone" );
 				$( document ).unbind( "pageremove", removeCallback );
-				start( 1000 );
+				start();
 			}
 		]);
 	});
@@ -229,7 +292,7 @@ $.testHelper.delayStart();
 			function(){
 				$.mobile.changePage = newChangePage;
 
- 				$('#non-ajax-form').one('submit', function(event){
+				$('#non-ajax-form').one('submit', function(event){
 					ok(true, 'submit callbacks are fired');
 					event.preventDefault();
 				}).submit();

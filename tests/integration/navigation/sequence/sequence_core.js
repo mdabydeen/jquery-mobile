@@ -38,6 +38,34 @@
 		}
 	}
 
+	asyncTest( "Navigating to an internal page", function() {
+		var origUrl,
+			eventNs = ".navigatingToAnInternalPage";
+
+		expect( 1 );
+
+		maybeWaitForStartPage([
+			function() {
+				origUrl = location.href.replace( "&ui-state=dialog", "" );
+				$( "#openInternalPage" ).click();
+			},
+			{
+				pagecontainerchange: { src: $.mobile.pageContainer, event: "pagecontainerchange" + eventNs + "1" }
+			},
+			function() {
+				deepEqual( location.href, origUrl.indexOf( "#" ) >= 0 ?
+					origUrl + "internal-page" :
+					origUrl + "#internal-page",
+					"URL after popup opens differs only by an appended dialog hash key" );
+				$.mobile.back();
+			},
+			{
+				pagecontainerchange: { src: $.mobile.pageContainer, event: "pagecontainerchange" + eventNs + "2" }
+			},
+			start
+		]);
+	});
+
 	asyncTest( "Returning from a dialog results in the page from which it opened", function() {
 		var eventNs = ".returningFromADialog";
 		expect( 2 );
@@ -64,19 +92,25 @@
 	});
 
 	asyncTest( "Returning from a popup results in the page from which it opened", function() {
-		var origActive, eventNs = ".returningFromAPopup";
+		var origActive, origUrl,
+			eventNs = ".returningFromAPopup";
 
-		expect( 3 );
+		expect( 4 );
 
 		maybeWaitForStartPage([
 			function() {
 				origActive = $.mobile.activePage;
+				origUrl = location.href;
 				$( "#openPopup" ).click();
 			},
 			{
 				popupafteropen: { src: function() { return $( "#thePopup" ); }, event: "popupafteropen" + eventNs + "1" }
 			},
 			function( result ) {
+				deepEqual( location.href, origUrl.indexOf( "#" ) >= 0 ?
+					origUrl + $.mobile.dialogHashKey :
+					origUrl + "#" + $.mobile.dialogHashKey,
+					"URL after popup opens differs only by an appended dialog hash key" );
 				ok( !result.popupafteropen.timedOut, "Popup emitted 'popupafteropen'" );
 				$( "#thePopup" ).parent().prev().click();
 			},
@@ -542,6 +576,67 @@
 				ok( $.mobile.activePage.attr( "id" ) === "basicTestPage", "Coming back from another page to the start page works again" );
 				start();
 			}
+		], eventNs );
+	});
+
+	asyncTest( "Sequence page1 -> page2 -> popup -> page-styled-as-dialog <- back", function() {
+		var eventNs = ".page1Page2PopupDialogPageBack";
+
+		expect();
+
+		maybeWaitForStartPage([
+			function() {
+				$( "#openAnotherPage" ).click();
+			},
+			{
+				pagecontainerchange: {
+					src: $.mobile.pageContainer,
+					event: "pagecontainerchange" + eventNs + "1"
+				}
+			},
+			function() {
+				deepEqual( $.mobile.activePage.attr( "id" ), "anotherPage",
+					"Landed on another page" );
+				$( "#openPopupOnAnotherPage" ).click();
+			},
+			{
+				popupafteropen: {
+					src: function() { return $( "#popupOnAnotherPage" ); },
+					event: "popupafteropen" + eventNs + "2"
+				}
+			},
+			function() {
+				$( "#openPageStyledAsDialog" ).click();
+			},
+			{
+				pagecontainerchange: {
+					src: $.mobile.pageContainer,
+					event: "pagecontainerchange" + eventNs + "3"
+				}
+			},
+			function() {
+				deepEqual( $.mobile.activePage.attr( "id" ), "pageStyledAsDialog",
+					"Landed on page styled as dialog" );
+				$.mobile.back();
+			},
+			{
+				pagecontainerchange: {
+					src: $.mobile.pageContainer,
+					event: "pagecontainerchange" + eventNs + "4"
+				}
+			},
+			function() {
+				deepEqual( $.mobile.activePage.attr( "id" ), "anotherPage",
+					"Navigating back() from the page styled as a dialog reaches another page" );
+				$.mobile.back();
+			},
+			{
+				pagecontainerchange: {
+					src: $.mobile.pageContainer,
+					event: "pagecontainerchange" + eventNs + "4"
+				}
+			},
+			start
 		], eventNs );
 	});
 

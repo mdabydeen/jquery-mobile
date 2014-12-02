@@ -8,18 +8,18 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<style>
 		.nav-glyphish-example .ui-btn { padding-top: 40px !important; }
 		.nav-glyphish-example .ui-btn:after { width: 30px!important; height: 30px!important; margin-left: -15px !important; box-shadow: none!important; -moz-box-shadow: none!important; -webkit-box-shadow: none!important; -webkit-border-radius: 0 !important; border-radius: 0 !important; }
-		#chat:after { background:  url(../_assets/img/glyphish-icons/09-chat2.png) 50% 50% no-repeat; background-size: 24px 22px; }
-		#email:after { background:  url(../_assets/img/glyphish-icons/18-envelope.png) 50% 50% no-repeat; background-size: 24px 16px;  }
-		#login:after { background:  url(../_assets/img/glyphish-icons/30-key.png) 50% 50% no-repeat;  background-size: 12px 26px; }
-		#beer:after { background:  url(../_assets/img/glyphish-icons/88-beermug.png) 50% 50% no-repeat;  background-size: 22px 27px; }
-		#coffee:after { background:  url(../_assets/img/glyphish-icons/100-coffee.png) 50% 50% no-repeat;  background-size: 20px 24px; }
-		#skull:after { background:  url(../_assets/img/glyphish-icons/21-skull.png) 50% 50% no-repeat;  background-size: 22px 24px; }
+		#chat:after { background:  url("../_assets/img/glyphish-icons/09-chat2.png") 50% 50% no-repeat; background-size: 24px 22px; }
+		#email:after { background:  url("../_assets/img/glyphish-icons/18-envelope.png") 50% 50% no-repeat; background-size: 24px 16px;  }
+		#login:after { background:  url("../_assets/img/glyphish-icons/30-key.png") 50% 50% no-repeat;  background-size: 12px 26px; }
+		#beer:after { background:  url("../_assets/img/glyphish-icons/88-beermug.png") 50% 50% no-repeat;  background-size: 22px 27px; }
+		#coffee:after { background:  url("../_assets/img/glyphish-icons/100-coffee.png") 50% 50% no-repeat;  background-size: 20px 24px; }
+		#skull:after { background:  url("../_assets/img/glyphish-icons/21-skull.png") 50% 50% no-repeat;  background-size: 22px 24px; }
 	</style>
 </head>
 <body>
@@ -34,7 +34,7 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Navbar</h1>
+		<h1>Navbar <a href="http://api.jquerymobile.com/navbar/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
 		<p>jQuery Mobile has a very basic navbar widget that is useful for providing up to 5 buttons with optional icons in a bar.</p>
 
@@ -286,11 +286,38 @@
 			<div data-role="footer">
 				<div data-role="navbar">
 					<ul>
-						<li><a href="#" data-icon="grid"data-theme="a">A</a></li>
+						<li><a href="#" data-icon="grid" data-theme="a">A</a></li>
 						<li><a href="#" data-icon="star" data-theme="b">B</a></li>
 					</ul>
 				</div><!-- /navbar -->
 			</div><!-- /footer -->
+			</div><!--/demo-html -->
+
+		<h2>Navbars with button elements</h2>
+
+		<p>Instead of links you can also use button elements inside navbars.</p>
+
+			<div data-demo-html="true">
+				<div data-role="navbar" data-iconpos="left">
+					<ul>
+						<li><button data-icon="home">One</button></li>
+						<li><button data-icon="grid" data-theme="b">Two</button></li>
+						<li><button data-icon="search">Three</button></li>
+					</ul>
+				</div><!-- /navbar -->
+			</div><!--/demo-html -->
+
+			<div data-demo-html="true">
+				<div data-role="header" style="overflow:hidden;">
+				<h1>I'm a header</h1>
+					<div data-role="navbar" data-iconpos="right">
+						<ul>
+							<li><button data-icon="home">One</button></li>
+							<li><button data-icon="grid" data-theme="b">Two</button></li>
+							<li><button data-icon="search">Three</button></li>
+						</ul>
+					</div><!-- /navbar -->
+				</div><!-- /header -->
 			</div><!--/demo-html -->
 
 	</div><!-- /content -->
@@ -299,7 +326,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

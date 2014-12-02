@@ -20,16 +20,21 @@ define( [
 		_create: function() {
 			this._super();
 
-			if ( !!this.options.clearBtn || this.isSearch ) {
+			if ( this.isSearch ) {
+				this.options.clearBtn = true;
+			}
+
+			if ( !!this.options.clearBtn && this.inputNeedsWrap ) {
 				this._addClearBtn();
 			}
 		},
 
 		clearButton: function() {
-
-			return $( "<a href='#' class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all" +
-    "' title='" + this.options.clearBtnText + "'>" + this.options.clearBtnText + "</a>" );
-
+			return $( "<a href='#' tabindex='-1' aria-hidden='true' " +
+				"class='ui-input-clear ui-btn ui-icon-delete ui-btn-icon-notext ui-corner-all'>" +
+				"</a>" )
+					.attr( "title", this.options.clearBtnText )
+					.text( this.options.clearBtnText );
 		},
 
 		_clearBtnClick: function( event ) {
@@ -91,7 +96,8 @@ define( [
 		_setOptions: function( options ) {
 			this._super( options );
 
-			if ( options.clearbtn !== undefined && !this.element.is( "textarea, :jqmData(type='range')" ) ) {
+			if ( options.clearBtn !== undefined &&
+				!this.element.is( "textarea, :jqmData(type='range')" ) ) {
 				if ( options.clearBtn ) {
 					this._addClearBtn();
 				} else {
@@ -100,7 +106,8 @@ define( [
 			}
 
 			if ( options.clearBtnText !== undefined && this._clearBtn !== undefined ) {
-				this._clearBtn.text( options.clearBtnText );
+				this._clearBtn.text( options.clearBtnText )
+					.attr("title", options.clearBtnText);
 			}
 		},
 
@@ -113,13 +120,16 @@ define( [
 		},
 
 		_destroyClear: function() {
-			this.element.removeClass( "ui-input-has-clear" );
-			this._unbindClear()._clearBtn.remove();
+			this.widget().removeClass( "ui-input-has-clear" );
+			this._unbindClear();
+			this._clearBtn.remove();
 		},
 
 		_destroy: function() {
 			this._super();
-			this._destroyClear();
+			if ( this.options.clearBtn ) {
+				this._destroyClear();
+			}
 		}
 
 	});

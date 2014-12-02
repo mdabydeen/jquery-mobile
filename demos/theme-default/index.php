@@ -6,7 +6,7 @@
 	<title>Default theme - jQuery Mobile Demos</title>
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="shortcut icon" href="../favicon.ico">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../../js/"></script>
 	<script>
 		$( document ).on( "pagecreate", function() {
@@ -24,13 +24,6 @@
 					$( "#testpage" ).removeClass( "noshadow" );
 				} else if ( $( "#off" ).prop( "checked" ) ) {
 					$( "#testpage" ).addClass( "noshadow" );
-				}
-			});
-			$( "#opt-iconshadow input" ).on( "change", function( event ) {
-				if ( $( "#off1" ).prop( "checked" ) ) {
-					$( "#testpage" ).removeClass( "ui-shadow-icon" );
-				} else if ( $( "#on1" ).prop( "checked" ) ) {
-					$( "#testpage" ).addClass( "ui-shadow-icon" );
 				}
 			});
 			$( "#opt-navbars input" ).on( "change", function( event ) {
@@ -59,7 +52,7 @@
 <div data-role="page" id="testpage">
 
 	<div data-role="header">
-		<h1>Default theme</h1>
+		<h1>Default theme <a href="http://api.jquerymobile.com/theme/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 		<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-icon-back ui-btn-icon-left ui-btn-icon-notext">Back</a>
 		<a href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-icon-left ui-icon-gear">Button</a>
 		<div data-role="navbar">
@@ -99,15 +92,6 @@
 					<input type="radio" name="shadow" id="on" checked>
 					<label for="off">Off</label>
 					<input type="radio" name="shadow" id="off">
-				</fieldset>
-			</div>
-			<div class="ui-field-contain" id="opt-iconshadow">
-				<fieldset data-role="controlgroup" data-type="horizontal">
-					<legend>Icon shadow:<br><small>On: add class ui-shadow-icon to the button or its container</small></legend>
-					<label for="on1">On</label>
-					<input type="radio" name="iconshadow" id="on1">
-					<label for="off1">Off</label>
-					<input type="radio" name="iconshadow" id="off1" checked>
 				</fieldset>
 			</div>
 		</form>
@@ -277,7 +261,7 @@
 		<p>I'm the collapsible content with a themed content block set to "<span class="theme">a</span>".</p>
 		</div>
 
-		<div data-role="collapsible-set" data-content-theme="a">
+		<div data-role="collapsibleset" data-content-theme="a">
 			<div data-role="collapsible">
 				<h3>Section 1</h3>
 			<p>I'm the collapsible content for section 1</p>

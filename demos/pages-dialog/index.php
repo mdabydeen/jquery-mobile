@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
     <style>
@@ -47,7 +47,7 @@
 			<a href="dialog.html" class="ui-shadow ui-btn ui-corner-all ui-btn-inline" data-transition="pop">Open dialog</a>
 
 		<h2>Transitions</h2>
-		<p>By default, the dialog will open with the same transition as a regular page. Like all pages, you can specify any <a href="page-transitions.html">page transition</a> you want on the dialog by adding the <code>data-transition</code> attribute to the link. To make it feel more dialog-like, we recommend specifying a transition of "pop", "slidedown" or "flip".</p>
+		<p>By default, the dialog will open with the same transition as a regular page. Like all pages, you can specify any <a href="../transitions/">page transition</a> you want on the dialog by adding the <code>data-transition</code> attribute to the link. To make it feel more dialog-like, we recommend specifying a transition of "pop", "slidedown" or "flip".</p>
 
 <code>
 &lt;a href=&quot;dialog.html&quot; role=&quot;button&quot; class=&quot;ui-shadow ui-btn ui-corner-all ui-btn-inline&quot; <strong>data-transition=&quot;slidedown&quot;</strong>&gt;data-transition=&quot;slidedown&quot;&lt;/a&gt;
@@ -110,7 +110,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

@@ -17,7 +17,7 @@
 		etargets.push( e.target );
 	});
 
-	$( "body" ).on("pagebeforecreate", "#c", function( e ){
+	$( document ).on("pagebeforecreate", "#c", function( e ){
 		cEvents.push( e.type );
 		cTargets.push( e.target );
 		return false;
@@ -49,6 +49,13 @@
 
 	test( "page element has default page theme class when not overidden" , function(){
 		ok( $( "#a" ).hasClass( "ui-page-theme-" + themedefault ) );
+	});
+
+	test( "setting option 'theme' on page updates classes correctly", function() {
+		$( "#a" ).page( "option", "theme", "x" );
+		deepEqual( $( "#a" ).hasClass( "ui-page-theme-x" ), true, "After setting option 'theme' to 'x', the page has the new theme class" );
+		deepEqual( $( "#a" ).hasClass( "ui-page-theme-" + themedefault ), false, "After setting option 'theme', the page does not have default theme class" );
+		$( "#a" ).page( "option", "theme", themedefault );
 	});
 
 	test( "B page has non-default theme matching its data-theme attr" , function(){

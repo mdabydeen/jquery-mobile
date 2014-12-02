@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<script>
@@ -22,22 +22,27 @@
 					closebtn = '<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>',
 					header = '<div data-role="header"><h2>' + brand + ' ' + model + '</h2></div>',
 					img = '<img src="../_assets/img/' + short + '.jpg" alt="' + brand + '" class="photo">',
-					popup = '<div data-role="popup" id="popup-' + short + '" data-short="' + short +'" data-theme="none" data-overlay-theme="a" data-corners="false" data-tolerance="15">' + closebtn + header + img + '</div>';
+					popup = '<div data-role="popup" id="popup-' + short + '" data-short="' + short +'" data-theme="none" data-overlay-theme="a" data-corners="false" data-tolerance="15"></div>';
 
-				// Create the popup. Trigger "pagecreate" instead of "create" because currently the framework doesn't bind the enhancement of toolbars to the "create" event (js/widgets/page.sections.js).
-				$.mobile.activePage.append( popup ).trigger( "pagecreate" );
+				// Create the popup.
+				$( header )
+					.appendTo( $( popup )
+						.appendTo( $.mobile.activePage )
+						.popup() )
+					.toolbar()
+					.before( closebtn )
+					.after( img );
+
 				// Wait with opening the popup until the popup image has been loaded in the DOM.
 				// This ensures the popup gets the correct size and position
 				$( ".photo", "#popup-" + short ).load(function() {
-					var height = $( this ).height(),
-						width = $( this ).width();
-					// Set height and width attribute of the image
-					$( this ).attr({ "height": height, "width": width });
 					// Open the popup
 					$( "#popup-" + short ).popup( "open" );
+
 					// Clear the fallback
 					clearTimeout( fallback );
 				});
+
 				// Fallback in case the browser doesn't fire a load event
 				var fallback = setTimeout(function() {
 					$( "#popup-" + short ).popup( "open" );
@@ -46,6 +51,13 @@
 
 			// Set a max-height to make large images shrink to fit the screen.
 			$( document ).on( "popupbeforeposition", ".ui-popup", function() {
+				var image = $( this ).children( "img" ),
+					height = image.height(),
+					width = image.width();
+
+				// Set height and width attribute of the image
+				$( this ).attr({ "height": height, "width": width });
+
 				// 68px: 2 * 15px for top/bottom tolerance, 38px for the header.
 				var maxHeight = $( window ).height() - 68 + "px";
 
@@ -93,7 +105,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

@@ -10,11 +10,15 @@
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
 define( [ "jquery",
-	"../../jquery.mobile.core",
-	"../../jquery.mobile.widget",
+	"../../vmouse",
+	"../../navigation/path",
+	"../../core",
+	"../../widget",
 	"./reset" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
+
+var escapeId = $.mobile.path.hashToSelector;
 
 $.widget( "mobile.checkboxradio", $.extend( {
 
@@ -22,6 +26,8 @@ $.widget( "mobile.checkboxradio", $.extend( {
 
 	options: {
 		theme: "inherit",
+
+		// Deprecated as of 1.5.0
 		mini: false,
 		wrapperClass: null,
 		enhanced: false,
@@ -35,15 +41,12 @@ $.widget( "mobile.checkboxradio", $.extend( {
 				return input.jqmData( dataAttr ) ||
 					input.closest( "form, fieldset" ).jqmData( dataAttr );
 			},
-			// NOTE: Windows Phone could not find the label through a selector
-			// filter works though.
-			parentLabel = input.closest( "label" ),
-			label = parentLabel.length ? parentLabel :
-				input
-					.closest( "form, fieldset, :jqmData(role='page'), :jqmData(role='dialog')" )
-					.find( "label" )
-					.filter( "[for='" + $.mobile.path.hashToSelector( input[0].id ) + "']" )
-					.first(),
+			label = this.options.enhanced ?
+				{
+					element: this.element.siblings( "label" ),
+					isParent: false
+				} :
+				this._findLabel(),
 			inputtype = input[0].type,
 			checkedClass = "ui-" + inputtype + "-on",
 			uncheckedClass = "ui-" + inputtype + "-off";
@@ -56,16 +59,18 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			this.options.disabled = true;
 		}
 
-		o.iconpos = inheritAttr( input, "iconpos" ) || label.attr( "data-" + $.mobile.ns + "iconpos" ) || o.iconpos,
+		o.iconpos = inheritAttr( input, "iconpos" ) ||
+			label.element.attr( "data-" + $.mobile.ns + "iconpos" ) || o.iconpos,
 
+		// Deprecated as of 1.5.0
 		// Establish options
 		o.mini = inheritAttr( input, "mini" ) || o.mini;
 
 		// Expose for other methods
 		$.extend( this, {
 			input: input,
-			label: label,
-			parentLabel: parentLabel,
+			label: label.element,
+			labelIsParent: label.isParent,
 			inputtype: inputtype,
 			checkedClass: checkedClass,
 			uncheckedClass: uncheckedClass
@@ -75,7 +80,7 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			this._enhance();
 		}
 
-		this._on( label, {
+		this._on( label.element, {
 			vmouseover: "_handleLabelVMouseOver",
 			vclick: "_handleLabelVClick"
 		});
@@ -91,10 +96,36 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		this.refresh();
 	},
 
+	_findLabel: function() {
+		var parentLabel, label, isParent,
+			input = this.element,
+			labelsList = input[ 0 ].labels;
+
+		if( labelsList && labelsList.length > 0 ) {
+			label = $( labelsList[ 0 ] );
+			isParent = $.contains( label[ 0 ], input[ 0 ] );
+		} else {
+			parentLabel = input.closest( "label" );
+			isParent = ( parentLabel.length > 0 );
+
+			// NOTE: Windows Phone could not find the label through a selector
+			// filter works though.
+			label = isParent ? parentLabel :
+				$( this.document[ 0 ].getElementsByTagName( "label" ) )
+					.filter( "[for='" + escapeId( input[ 0 ].id ) + "']" )
+					.first();
+		}
+
+		return {
+			element: label,
+			isParent: isParent
+		};
+	},
+
 	_enhance: function() {
 		this.label.addClass( "ui-btn ui-corner-all");
 
-		if ( this.parentLabel.length > 0 ) {
+		if ( this.labelIsParent ) {
 			this.input.add( this.label ).wrapAll( this._wrapper() );
 		} else {
 			//this.element.replaceWith( this.input.add( this.label ).wrapAll( this._wrapper() ) );
@@ -107,16 +138,17 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		this._setOptions({
 			"theme": this.options.theme,
 			"iconpos": this.options.iconpos,
+			"wrapperClass": this.options.wrapperClass,
+
+			// Deprecated as of 1.5.0
 			"mini": this.options.mini
 		});
 
 	},
 
 	_wrapper: function() {
-		return $( "<div class='"  +
-			( this.options.wrapperClass ? this.options.wrapperClass : "" ) +
-			" ui-" + this.inputtype +
-			( this.options.disabled ? " ui-state-disabled" : "" ) + "' >" );
+		return $( "<div class='ui-" + this.inputtype +
+			( this.options.disabled ? " ui-state-disabled" : "" ) + "' ></div>" );
 	},
 
 	_handleInputFocus: function() {
@@ -128,18 +160,10 @@ $.widget( "mobile.checkboxradio", $.extend( {
 	},
 
 	_handleInputVClick: function() {
-		var $this = this.element;
-
 		// Adds checked attribute to checked input when keyboard is used
-		if ( $this.is( ":checked" ) ) {
-
-			$this.prop( "checked", true);
-			this._getInputSet().not( $this ).prop( "checked", false );
-		} else {
-			$this.prop( "checked", false );
-		}
-
-		this._updateAll();
+		this.element.prop( "checked", this.element.is( ":checked" ) );
+		this._getInputSet().not( this.element ).prop( "checked", false );
+		this._updateAll( true );
 	},
 
 	_handleLabelVMouseOver: function( event ) {
@@ -182,23 +206,60 @@ $.widget( "mobile.checkboxradio", $.extend( {
 		});
 	},
 
-	//returns either a set of radios with the same name attribute, or a single checkbox
+	// Returns those radio buttons that are supposed to be in the same group as
+	// this radio button. In the case of a checkbox or a radio lacking a name
+	// attribute, it returns this.element.
 	_getInputSet: function() {
-		if ( this.inputtype === "checkbox" ) {
-			return this.element;
-		}
+		var selector, formId,
+			radio = this.element[ 0 ],
+			name = radio.name,
+			form = radio.form,
+			doc = this.element.parents().last().get( 0 ),
 
-		return this.element.closest( "form, :jqmData(role='page'), :jqmData(role='dialog')" )
-			.find( "input[name='" + this.element[ 0 ].name + "'][type='" + this.inputtype + "']" );
+			// A radio is always a member of its own group
+			radios = this.element;
+
+		// Only start running selectors if this is an attached radio button with a name
+		if ( name && this.inputtype === "radio" && doc ) {
+			selector = "input[type='radio'][name='" + escapeId( name ) + "']";
+
+			// If we're inside a form
+			if ( form ) {
+				formId = form.getAttribute( "id" );
+
+				// If the form has an ID, collect radios scattered throught the document which
+				// nevertheless are part of the form by way of the value of their form attribute
+				if ( formId ) {
+					radios = $( selector + "[form='" + escapeId( formId ) + "']", doc );
+				}
+
+				// Also add to those the radios in the form itself
+				radios = $( form ).find( selector ).filter( function() {
+
+					// Some radios inside the form may belong to some other form by virtue of
+					// having a form attribute defined on them, so we must filter them out here
+					return ( this.form === form );
+				}).add( radios );
+
+			// If we're outside a form
+			} else {
+
+				// Collect all those radios which are also outside of a form and match our name
+				radios = $( selector, doc ).filter( function() {
+					return !this.form;
+				});
+			}
+		}
+		return radios;
 	},
 
-	_updateAll: function() {
+	_updateAll: function( changeTriggered ) {
 		var self = this;
 
 		this._getInputSet().each( function() {
 			var $this = $( this );
 
-			if ( this.checked || self.inputtype === "checkbox" ) {
+			if ( ( this.checked || self.inputtype === "checkbox" ) && !changeTriggered ) {
 				$this.trigger( "change" );
 			}
 		})
@@ -239,14 +300,13 @@ $.widget( "mobile.checkboxradio", $.extend( {
 	},
 
 	refresh: function() {
-		var hasIcon = this._hasIcon(),
-			isChecked = this.element[ 0 ].checked,
+		var isChecked = this.element[ 0 ].checked,
 			active = $.mobile.activeBtnClass,
 			iconposClass = "ui-btn-icon-" + this.options.iconpos,
 			addClasses = [],
 			removeClasses = [];
 
-		if ( hasIcon ) {
+		if ( this._hasIcon() ) {
 			removeClasses.push( active );
 			addClasses.push( iconposClass );
 		} else {
@@ -261,6 +321,8 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			addClasses.push( this.uncheckedClass );
 			removeClasses.push( this.checkedClass );
 		}
+
+		this.widget().toggleClass( "ui-state-disabled", this.element.prop( "disabled" ) );
 
 		this.label
 			.addClass( addClasses.join( " " ) )
@@ -281,6 +343,8 @@ $.widget( "mobile.checkboxradio", $.extend( {
 			this.input.prop( "disabled", !!options.disabled );
 			outer.toggleClass( "ui-state-disabled", !!options.disabled );
 		}
+
+		// Deprecated as of 1.5.0
 		if ( options.mini !== undefined ) {
 			outer.toggleClass( "ui-mini", !!options.mini );
 		}

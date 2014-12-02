@@ -120,26 +120,48 @@
 		var result, opts = {};
 
 		proto.getActivePage = function() {
-			return $( "<div>", {"class": "ui-dialog"} );
+			return $( "<div>" ).data( "mobile-dialog", true );
 		};
 
-		proto._getActiveHistory = function() {
+		proto._getHistory = function() {
 			return {
-				role: "foo",
-				transition: "bar"
+				length: 3,
+				activeIndex: 1,
+				lastIndex: 2,
+				stack: [
+					{
+						role: "page",
+						transition: "none"
+					},
+					{
+						role: "foo",
+						transition: "flip"
+					},
+					{
+						role: "page",
+						transition: "bar"
+					}
+				],
+				getLast: function() {
+					return this.stack[ this.lastIndex ];
+				},
+				getActive: function() {
+					return this.stack[ this.activeIndex ];
+				}
 			};
 		};
 
-		equal( opts.role, undefined );
-		equal( opts.transition, undefined );
-		equal( opts.reverse, undefined );
+		deepEqual( opts.role, undefined, "Initially, role is undefined" );
+		deepEqual( opts.transition, undefined, "Initially, transition is undefined" );
+		deepEqual( opts.reverse, undefined, "Initially, reverse is undefined" );
 
 		// the pageUrl is returned for use as the target url when the active content is a dialog
-		equal( proto._handleDialog( opts, {direction: "back", pageUrl: "baz" } ), "baz" );
+		deepEqual( proto._handleDialog( opts, { direction: "back", pageUrl: "baz" } ), "baz",
+			"pageUrl is returned" );
 
-		equal( opts.role, "foo" );
-		equal( opts.transition, "bar" );
-		equal( opts.reverse, true );
+		deepEqual( opts.role, "foo", "Afterwards, role is 'foo'" );
+		deepEqual( opts.transition, "bar", "Afterwards, transition is 'bar'" );
+		deepEqual( opts.reverse, true, "Afterwards, reverse is true" );
 	});
 
 	var base = "http://example.com/";
@@ -174,23 +196,6 @@
 
 	test( "returns the hashless value when the argument is a path", function() {
 		equal( "foo/bar", proto._handleDestination( "#foo/bar" ) );
-	});
-
-	test( "returns initial content when the url is base plus initial destination", function() {
-		var initialContent = $( "<div>" );
-
-		proto._getHistory = function() {
-			return {
-				initialDst: "foo",
-				stack: [ {url: "will not be equal to initial destination"} ]
-			};
-		};
-
-		proto._getInitialContent = function() {
-			return initialContent;
-		};
-
-		equal( initialContent, proto._handleDestination(base + "#" + proto._getHistory().initialDst) );
 	});
 
 	module( "Content Widget _recordScroll" );
@@ -506,5 +511,24 @@
 		};
 
 		proto._loadUrl( "foo", {}, {} );
+	});
+
+	test( "_find() does not throw upon encountering a weird file name", function() {
+		var errorThrown,
+			proto = $.mobile.pagecontainer.prototype;
+
+		try {
+			proto._find.call({
+				_getNs: proto._getNs,
+				_createFileUrl: proto._createFileUrl,
+				_createDataUrl: proto._createDataUrl,
+				_getInitialContent: function() { return $( "<div>" ); },
+				element: $( "<body>" )
+			}, "http://localhost/Raison d'être.html" );
+		} catch( error ) {
+			errorThrown = error;
+		}
+
+		deepEqual( errorThrown, undefined, "Error was not thrown" );
 	});
 })(jQuery);

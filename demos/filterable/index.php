@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 </head>
@@ -24,7 +24,7 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Filterable</h1>
+		<h1>Filterable <a href="http://api.jquerymobile.com/filterable/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
 		<p>
 			The children of any element can be filtered by setting the attribute <code>data-filter="true"</code> on the element. By default, the text contained in each child is used for filtering, however, you also have the option of setting the attribute <code>data-filtertext</code> to a string value on any child that will be considered for filtering to associate custom filter text instead.</p>
@@ -36,7 +36,7 @@
 
 			<div data-demo-html="true">
 				<form class="ui-filterable">
-					<input id="filterBasic-input" data-type="search"></input>
+					<input id="filterBasic-input" data-type="search">
 				</form>
 				<ul data-role="listview" data-filter="true" data-input="#filterBasic-input">
 					<li>Acura</li>
@@ -55,7 +55,7 @@
 
 			<div data-demo-html="true">
 				<form>
-					<input id="filterTable-input" data-type="search"></input>
+					<input id="filterTable-input" data-type="search">
 				</form>
 				<table data-role="table" id="movie-table" data-filter="true" data-input="#filterTable-input" class="ui-responsive">
 					<thead>
@@ -99,7 +99,7 @@
 
 			<div data-demo-html="true">
 				<form>
-					<input data-type="search" id="filterControlgroup-input"></input>
+					<input data-type="search" id="filterControlgroup-input">
 				</form>
 				<div data-role="controlgroup" data-filter="true" data-input="#filterControlgroup-input">
 					<a href="#" class="ui-btn ui-shadow ui-corner-all">Button 1</a>
@@ -110,33 +110,82 @@
 				</div>
 			</div>
 
-		<h2>Filter Select</h2>
-		<p>The widget also works on <code>select</code> widgets by hiding options that do not match the filter text. To use a filter for <code>options</code>, declare the <code>data-filter</code> attribute on the select element.</p>
-
-			<div data-demo-html="true">
-				<form>
-					<input data-type="search" id="searchForSelect"></input>
-				</form>
-				<select id="anotherSelect" data-filter="true" data-input="#searchForSelect">
-					<option value="A">Option A</option>
-					<option value="B">Option B</option>
-					<option value="C">Option C</option>
-					<option value="D">Option D</option>
-					<option value="E">Option E</option>
-					<option value="F">Option F</option>
-					<option value="G">Option G</option>
-					<option value="H">Option H</option>
-					<option value="I">Option I</option>
-					<option value="J">Option J</option>
-				</select>
-			</div>
-
+		<h2>Filter Collapsible Set</h2>
+		<div data-demo-html="true">
+			<form>
+				<input data-type="search" id="searchForCollapsibleSet">
+			</form>
+				<div data-role="collapsibleset" data-filter="true" data-inset="true" id="collapsiblesetForFilter" data-input="#searchForCollapsibleSet">
+					<div data-role="collapsible" data-filtertext="Animals">
+						<h3>Animals</h3>
+						<ul data-role="listview" data-inset="false">
+							<li>Cats</li>
+							<li>Dogs</li>
+							<li>Lizards</li>
+							<li>Snakes</li>
+						</ul>
+					</div>
+					<div data-role="collapsible" data-filtertext="Cars">
+						<h3>Cars</h3>
+						<ul data-role="listview" data-inset="false">
+							<li>Acura</li>
+							<li>Audi</li>
+							<li>BMW</li>
+							<li>Cadillac</li>
+						</ul>
+					</div>
+					<div data-role="collapsible" data-filtertext="Planets">
+						<h3>Planets</h3>
+						<ul data-role="listview" data-inset="false">
+							<li>Earth</li>
+							<li>Jupiter</li>
+							<li>Mars</li>
+							<li>Mercury</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--/demo-html -->
+		<h2>Filter Collapsible Set and collapsible children</h2>
+		<div data-demo-html="true">
+			<form>
+				<input data-type="search" id="searchForCollapsibleSetChildren">
+			</form>
+				<div data-role="collapsibleset" data-filter="true" data-children="&gt; div, &gt; div div ul li" data-inset="true" id="collapsiblesetForFilterChildren" data-input="#searchForCollapsibleSetChildren">
+					<div data-role="collapsible" data-filtertext="Animals Cats Dogs Lizards snakes">
+						<h3>Animals</h3>
+						<ul data-role="listview" data-inset="false">
+							<li data-filtertext="Animals Cats">Cats</li>
+							<li data-filtertext="Animals Dogs">Dogs</li>
+							<li data-filtertext="Animals Lizards">Lizards</li>
+							<li data-filtertext="Animals Snakes">Snakes</li>
+						</ul>
+					</div>
+					<div data-role="collapsible" data-filtertext="Cars Acura Audi BMW Cadillac">
+						<h3>Cars</h3>
+						<ul data-role="listview" data-inset="false">
+							<li data-filtertext="Cars Acura">Acura</li>
+							<li data-filtertext="Cars Audi">Audi</li>
+							<li data-filtertext="Cars BMW">BMW</li>
+							<li data-filtertext="Cars Cadillac">Cadillac</li>
+						</ul>
+					</div>
+					<div data-role="collapsible" data-filtertext="Planets Earth Jupiter Mars Mercury">
+						<h3>Planets</h3>
+						<ul data-role="listview" data-inset="false">
+							<li data-filtertext="Planets Acura">Earth</li>
+							<li data-filtertext="Planets Jupiter">Jupiter</li>
+							<li data-filtertext="Planets Mars">Mars</li>
+							<li data-filtertext="Planets Mercury">Mercury</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--/demo-html -->
 		<h2>Filter Anything</h2>
 		<p>The widget can be used for filtering on any element containing other elements, like a <code>div</code> containing <code>p</code> elements.
 			</p>
 			<div data-demo-html="true">
 				<form>
-					<input data-type="search" id="divOfPs-input"></input>
+					<input data-type="search" id="divOfPs-input">
 				</form>
 				<div class="elements" data-filter="true" data-input="#divOfPs-input">
 				<p><strong>These</strong> Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam</p>
@@ -154,11 +203,7 @@
 			</p>
 
 			<div data-demo-html="true">
-				<ul data-role="listview"
-					data-filter="true"
-					data-filter-placeholder="Find cars..."
-					data-filter-theme="a"
-					data-inset="true">
+				<ul data-role="listview" data-filter="true" data-filter-placeholder="Find cars..." data-filter-theme="a" data-inset="true">
 					<li>Acura</li>
 					<li>Audi</li>
 					<li>BMW</li>
@@ -180,11 +225,7 @@
 			</p>
 
 			<div data-demo-html="true">
-				<ul data-role="listview"
-					data-filter="true"
-					data-filter-reveal="true"
-					data-filter-placeholder="Search fruits..."
-					data-inset="true">
+				<ul data-role="listview" data-filter="true" data-filter-reveal="true" data-filter-placeholder="Search fruits..." data-inset="true">
 					<li><a href="#">Apple</a></li>
 					<li><a href="#">Banana</a></li>
 					<li><a href="#">Cherry</a></li>
@@ -200,8 +241,8 @@
 
 		<p>To set a custom filtering function that will become the new default for all filterable widgets, override the <code>filterCallback</code> option in the filterable widget prototype in a "mobileinit" signal handler:</p>
 
-<pre><code>$.mobile.document.one( "mobileinit", function() {
-	$.mobile.filterable.prototype.filterCallback = function( index, searchValue ) {
+<pre><code>$( document ).one( "mobileinit", function() {
+	$.mobile.filterable.prototype.options.filterCallback = function( index, searchValue ) {
 		// In this function the keyword "this" refers to the element for which the
 		// code must decide whether it is to be filtered or not.
 		// A return value of true indicates that the element referred to by the
@@ -245,21 +286,9 @@
 	<div data-demo-html="true">
 		<form>
 			<div class="ui-input-search ui-body-inherit ui-corner-all ui-shadow-inset ui-input-has-clear">
-				<input
-					data-type="search"
-					data-enhanced="true"
-					data-inset="false"
-					id="pre-rendered-example-input"
-					placeholder="Filter items..."
-					value="au"></input>
+				<input data-type="search" data-enhanced="true" data-inset="false" id="pre-rendered-example-input" placeholder="Filter items..." value="au">
 			</div>
-			<div
-				data-role="controlgroup"
-				data-enhanced="true"
-				data-filter="true"
-				data-filter-reveal="true"
-				data-input="#pre-rendered-example-input"
-				class="ui-controlgroup ui-controlgroup-vertical ui-corner-all">
+			<div data-role="controlgroup" data-enhanced="true" data-filter="true" data-filter-reveal="true" data-input="#pre-rendered-example-input" class="ui-controlgroup ui-controlgroup-vertical ui-corner-all">
 				<div class="ui-controlgroup-controls">
 					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-shadow ui-screen-hidden">Acura</a>
 					<a href="#" class="ui-btn ui-corner-all ui-shadow ui-first-child ui-shadow ui-last-child">Renault</a>
@@ -275,7 +304,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

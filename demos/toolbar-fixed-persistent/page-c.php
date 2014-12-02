@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 	<script>
@@ -17,11 +17,11 @@
 			$( "[data-role='header'], [data-role='footer']" ).toolbar();
 		});
 		// Update the contents of the toolbars
-		$( document ).on( "pageshow", "[data-role='page']", function() {
+		$( document ).on( "pagecontainerchange", function() {
 			// Each of the four pages in this demo has a data-title attribute
 			// which value is equal to the text of the nav button
 			// For example, on first page: <div data-role="page" data-title="Info">
-			var current = $( this ).jqmData( "title" );
+			var current = $( ".ui-page-active" ).jqmData( "title" );
 			// Change the heading
 			$( "[data-role='header'] h1" ).text( current );
 			// Remove active class from nav buttons
@@ -101,7 +101,7 @@
 					<a href="#purchase" data-rel="popup" data-position-to="window" data-transition="pop">Purchase album</a>
 				</a></li>
 
-				<li><a href="index.html">
+				<li><a href="index.php">
 					<img src="../_assets/img/album-k.jpg">
 					<h3>Hot Fuss</h3>
 				<p>Killers</p>

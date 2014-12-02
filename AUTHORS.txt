@@ -214,3 +214,44 @@ Erik Yuzwa <erik@erikyuzwa.com>
 Jonathan Hogervorst <jonathan@hogervorst.info>
 Przemyslaw Ciezkowski <p.ciezkowski@samsung.com>
 Max Lynch <max@codiqa.com>
+John Chacko <poonkave@gmail.com>
+Ralph Whitbeck <ralph.whitbeck@gmail.com>
+Jonathan Sampson <jjdsampson@gmail.com>
+Tomas Cassidy <tomas.cassidy@gmail.com>
+Aurelio De Rosa <aurelioderosa@gmail.com>
+Brandon Belvin <brandon@belvinfamily.com>
+Sven Franck <svenfranck@yahoo.com>
+Andrew Johnson <inharmony88@gmail.com>
+Kangsik Kim <allsteady@gmail.com>
+Craig Patik <cpatik@gmail.com>
+Rob Schmuecker <robert.schmuecker@gmail.com>
+Pere Orga <gotrunks@gmail.com>
+Spencer Oberstadt <soberstadt@gmail.com>
+Richard Pangborn <rpangborn@gmail.com>
+Rocco Georgi <rocco@pavingways.com>
+Hyunsook Park <hspark.dasom@gmail.com>
+Cristi Citea <cristi.catea@gmail.com>
+Calvin Tam <calvinyhtam@gmail.com>
+Patrick Stapleton <github@gdi2290.com>
+Lou Franco <lfranco@greenwave-solutions.com>
+Vasu Bhardwaj <voodoorapter014@gmail.com>
+Richard McDaniel <rm0026@uah.edu>
+Timothy Elliott <tle@holymonkey.com>
+Florian Böhle <boehle@fzi.de>
+Marcus Krahl <marcuskrahl@googlemail.com>
+siokoshou <siokoshou@gmail.com>
+Cory Gackenheimer <cory.gack@gmail.com>
+Ben Harrison <ben.onthewater@gmail.com>
+Dick van den Brink <d_vandenbrink@outlook.com>
+Dylan Barrell <dylan@barrell.com>
+Markus Staab <maggus.staab@googlemail.com>
+Mike Pennisi <mike@mikepennisi.com>
+Jules Gravinese <jules@universeg.com>
+Dimitri Benin <semtexx@web.de>
+Peter Dave Hello <hsu@peterdavehello.org>
+Rob DiCiuccio <rob@definitionstudio.com>
+Simon Reinhardt <simon.reinhardt@koeln.de>
+TrueEddie <ecosme@me.com>
+Josh Kalderimis <josh.kalderimis@gmail.com>
+Lisa Seacat DeLuca <ldeluca@us.ibm.com>
+Ian Maffett <ian.maffett@intel.com>

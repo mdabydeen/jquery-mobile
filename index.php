@@ -9,11 +9,11 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>jQuery Mobile</title>
-    <link rel="stylesheet"  href="css/themes/default/jquery.mobile.css">
+    <link rel="stylesheet" href="css/themes/default/jquery.mobile.css">
     <link rel="stylesheet" href="demos/_assets/css/jqm-demos.css">
     <link rel="shortcut icon" href="demos/_assets/favicon.ico">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-    <script src="js/jquery.js"></script>
+    <script src="external/jquery/jquery.js"></script>
     <script src="demos/_assets/js/"></script>
     <script src="js/"></script>
     <script>

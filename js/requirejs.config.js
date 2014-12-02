@@ -2,22 +2,15 @@ requirejs.config({
 	"paths": {
 		// requireJS plugins
 		"text": "../external/requirejs/plugins/text",
-		"json": "../external/requirejs/plugins/json"
+		"json": "../external/requirejs/plugins/json",
+
+		"jquery": "../external/jquery/jquery",
+		"jquery-ui": "../external/jquery-ui",
+		"jquery-plugins": "../external/jquery/plugins"
 	},
 	"shim": {
-		"jquery.hashchange": {
-			deps: [ "jquery" ]
-		},
-		"jquery.ui.widget": {
-			deps: [ "jquery" ],
-			exports: "$.widget"
-		},
-		"widgets/jquery.ui.tabs": {
-			deps: [ "jquery.ui.widget" ]
-		},
-		"widgets/jquery.ui.core": {
-			deps: [ "jquery" ],
-			exports: [ "$.ui" ]
-		}
+		"jquery-ui/jquery.ui.widget": [ "jquery" ],
+		"jquery-ui/jquery.ui.tabs": [ "jquery-ui/jquery.ui.widget" ],
+		"jquery-ui/jquery.ui.core": [ "jquery" ]
 	}
 });

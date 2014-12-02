@@ -24,7 +24,7 @@
 		},
 
 		teardown: function() {
-			window.scrollTo( 0 );
+			window.scrollTo( 0, 0 );
 			$( "body" ).height( $(window).height() );
 		}
 	});
@@ -64,7 +64,7 @@
 		expect( 1 );
 
 		// ensure the two values are different to trigger the method call
-		window.scrollTo( 0 );
+		window.scrollTo( 0, 0 );
 		instance.toScroll = 100;
 
 		// stub to capture call
@@ -193,5 +193,45 @@
 		};
 
 		instance.transition();
+	});
+
+	test( "transition respects getMaxScrollForTransition", function() {
+		var transition, valuePassedToNone,
+			original = {
+				maxScroll: $.mobile.getMaxScrollForTransition,
+				startOut: $.mobile.Transition.prototype.startOut,
+				doneOut: $.mobile.Transition.prototype.doneOut,
+				defaultHomeScroll: $.mobile.defaultHomeScroll
+			},
+			startOutCalled = false,
+			doneOutCalled = false;
+
+		$.mobile.getMaxScrollForTransition = function() {
+			return -1;
+		};
+
+		$.mobile.Transition.prototype.startOut = function( screenHeight, reverseClass, none ) {
+			startOutCalled = true;
+			return original.startOut.apply( this, arguments );
+		};
+
+		$.mobile.Transition.prototype.doneOut = function( height, reverse, none, preventFocus ) {
+			doneOutCalled = true;
+			valuePassedToNone = none;
+			return original.doneOut.apply( this, arguments );
+		};
+
+		$.mobile.defaultHomeScroll = 0;
+
+		( new $.mobile.Transition( "slide", false, $([]), $([]) ) ).transition();
+
+		deepEqual( startOutCalled, false, "startOut was not called" );
+		deepEqual( doneOutCalled, true, "doneOut was called" );
+		deepEqual( valuePassedToNone, true, "The value passed to none was true" );
+
+		$.mobile.getMaxScrollForTransition = original.maxScroll;
+		$.mobile.Transition.prototype.startOut = original.startOut;
+		$.mobile.Transition.prototype.doneOut = original.doneOut;
+		$.mobile.defaultHomeScroll = original.defaultHomeScroll;
 	});
 })( jQuery );

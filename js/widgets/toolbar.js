@@ -7,10 +7,10 @@
 
 define( [
 	"jquery",
-	"../jquery.mobile.widget",
-	"../jquery.mobile.core",
-	"../jquery.mobile.navigation",
-	"../jquery.mobile.zoom" ], function( jQuery ) {
+	"../widget",
+	"../core",
+	"../navigation",
+	"../zoom" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -38,8 +38,7 @@ define( [
 				role: role,
 				page: page,
 				leftbtn: leftbtn,
-				rightbtn: rightbtn,
-				backBtn: null
+				rightbtn: rightbtn
 			});
 			this.element.attr( "role", role === "header" ? "banner" : "contentinfo" ).addClass( "ui-" + role );
 			this.refresh();
@@ -47,15 +46,7 @@ define( [
 		},
 		_setOptions: function( o ) {
 			if ( o.addBackBtn !== undefined ) {
-				if ( this.options.addBackBtn &&
-					this.role === "header" &&
-					$( ".ui-page" ).length > 1 &&
-					this.page[ 0 ].getAttribute( "data-" + $.mobile.ns + "url" ) !== $.mobile.path.stripHash( location.hash ) &&
-					!this.leftbtn ) {
-						this._addBackButton();
-				} else {
-					this.element.find( ".ui-toolbar-back-btn" ).remove();
-				}
+				this._updateBackButton();
 			}
 			if ( o.backBtnTheme != null ) {
 				this.element
@@ -82,6 +73,8 @@ define( [
 				this._setRelative();
 				if ( this.role === "footer" ) {
 					this.element.appendTo( "body" );
+				} else if ( this.role === "header" ) {
+					this._updateBackButton();
 				}
 			}
 			this._addHeadingClasses();
@@ -95,32 +88,78 @@ define( [
 
 		// Deprecated in 1.4. As from 1.5 button classes have to be present in the markup.
 		_btnMarkup: function() {
-			this.element.children( "a" ).attr( "data-" + $.mobile.ns + "role", "button" );
+			this.element
+				.children( "a" )
+				.filter( ":not([data-" + $.mobile.ns + "role='none'])" )
+				.attr( "data-" + $.mobile.ns + "role", "button" );
 			this.element.trigger( "create" );
 		},
 		// Deprecated in 1.4. As from 1.5 ui-btn-left/right classes have to be present in the markup.
 		_addHeaderButtonClasses: function() {
-			var $headeranchors = this.element.children( "a, button" );
-			this.leftbtn = $headeranchors.hasClass( "ui-btn-left" );
-			this.rightbtn = $headeranchors.hasClass( "ui-btn-right" );
+			var headerAnchors = this.element.children( "a, button" );
 
-			this.leftbtn = this.leftbtn || $headeranchors.eq( 0 ).not( ".ui-btn-right" ).addClass( "ui-btn-left" ).length;
+			// Do not mistake a back button for a left toolbar button
+			this.leftbtn = headerAnchors.hasClass( "ui-btn-left" ) &&
+				!headerAnchors.hasClass( "ui-toolbar-back-btn" );
 
-			this.rightbtn = this.rightbtn || $headeranchors.eq( 1 ).addClass( "ui-btn-right" ).length;
+			this.rightbtn = headerAnchors.hasClass( "ui-btn-right" );
 
+			// Filter out right buttons and back buttons
+			this.leftbtn = this.leftbtn ||
+				headerAnchors.eq( 0 )
+					.not( ".ui-btn-right,.ui-toolbar-back-btn" )
+					.addClass( "ui-btn-left" )
+					.length;
+
+			this.rightbtn = this.rightbtn || headerAnchors.eq( 1 ).addClass( "ui-btn-right" ).length;
 		},
-		_addBackButton: function() {
-			var theme,
-				options = this.options;
-
-			if ( !this.backBtn ) {
+		_updateBackButton: function() {
+			var backButton,
+				options = this.options,
 				theme = options.backBtnTheme || options.theme;
-				this.backBtn = $( "<a role='button' href='javascript:void(0);' " +
-					"class='ui-btn ui-corner-all ui-shadow ui-btn-left " +
-						( theme ? "ui-btn-" + theme + " " : "" ) +
-						"ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left' " +
-					"data-" + $.mobile.ns + "rel='back'>" + options.backBtnText + "</a>" )
-						.prependTo( this.element );
+
+			// Retrieve the back button or create a new, empty one
+			backButton = this._backButton = ( this._backButton || {} );
+
+			// We add a back button only if the option to do so is on
+			if ( this.options.addBackBtn &&
+
+					// This must also be a header toolbar
+					this.role === "header" &&
+
+					// There must be multiple pages in the DOM
+					$( ".ui-page" ).length > 1 &&
+					( this.page ?
+
+						// If the toolbar is internal the page's URL must differ from the hash
+						( this.page[ 0 ].getAttribute( "data-" + $.mobile.ns + "url" ) !==
+							$.mobile.path.stripHash( location.hash ) ) :
+
+						// Otherwise, if the toolbar is external there must be at least one
+						// history item to which one can go back
+						( $.mobile.navigate && $.mobile.navigate.history &&
+							$.mobile.navigate.history.activeIndex > 0 ) ) &&
+
+					// The toolbar does not have a left button
+					!this.leftbtn ) {
+
+				// Skip back button creation if one is already present
+				if ( !backButton.attached ) {
+					this.backButton = backButton.element = ( backButton.element ||
+						$( "<a role='button' href='javascript:void(0);' " +
+							"class='ui-btn ui-corner-all ui-shadow ui-btn-left " +
+								( theme ? "ui-btn-" + theme + " " : "" ) +
+								"ui-toolbar-back-btn ui-icon-carat-l ui-btn-icon-left' " +
+							"data-" + $.mobile.ns + "rel='back'>" + options.backBtnText +
+							"</a>" ) )
+							.prependTo( this.element );
+					backButton.attached = true;
+				}
+
+			// If we are not adding a back button, then remove the one present, if any
+			} else if ( backButton.element ) {
+				backButton.element.detach();
+				backButton.attached = false;
 			}
 		},
 		_addHeadingClasses: function() {
@@ -131,6 +170,27 @@ define( [
 					"role": "heading",
 					"aria-level": "1"
 				});
+		},
+		_destroy: function() {
+			var currentTheme;
+
+			this.element.children( "h1, h2, h3, h4, h5, h6" )
+				.removeClass( "ui-title" )
+				.removeAttr( "role" )
+				.removeAttr( "aria-level" );
+
+			if ( this.role === "header" ) {
+				this.element.children( "a, button" )
+					.removeClass( "ui-btn-left ui-btn-right ui-btn ui-shadow ui-corner-all" );
+				if ( this.backButton) {
+					this.backButton.remove();
+				}
+			}
+
+			currentTheme = this.options.theme ? this.options.theme : "inherit";
+			this.element.removeClass( "ui-bar-" + currentTheme );
+
+			this.element.removeClass( "ui-" + this.role ).removeAttr( "role" );
 		}
 	});
 

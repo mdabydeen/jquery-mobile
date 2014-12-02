@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 </head>
@@ -24,7 +24,7 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Range slider</h1>
+		<h1>Range slider <a href="http://api.jquerymobile.com/rangeslider/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
 		<p>Range slider offer two handles to set a min and max value along a numeric continuum.
 			</p>
@@ -40,13 +40,11 @@
                         <input type="range" name="range-1b" id="range-1b" min="0" max="100" value="80">
                     </div>
 				</form>
-				</form>
                 </div><!-- /demo-html -->
 
                 <h2>Step attribute</h2>
 
                 <div data-demo-html="true">
-				<form>
 				<form>
                     <div data-role="rangeslider">
                         <label for="range-10a">Rangeslider:</label>
@@ -158,7 +156,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

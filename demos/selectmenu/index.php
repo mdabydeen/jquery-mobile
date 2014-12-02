@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../_assets/css/jqm-demos.css">
     <link rel="shortcut icon" href="../favicon.ico">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
-    <script src="../../js/jquery.js"></script>
+    <script src="../../external/jquery/jquery.js"></script>
     <script src="../_assets/js/"></script>
     <script src="../../js/"></script>
 </head>
@@ -24,7 +24,7 @@
 
     <div role="main" class="ui-content jqm-content">
 
-        <h1>Select menu</h1>
+        <h1>Select menu <a href="http://api.jquerymobile.com/selectmenu/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
         <p>The select menu is based on a native select element, which is hidden from view and replaced with a custom-styled select button. Tapping it opens the native menu. There is also a <a href="../selectmenu-custom/">custom select menu</a> widget, which also replaces the native dropdown.
         </p>
@@ -250,7 +250,7 @@
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

@@ -1,14 +1,14 @@
 //>>excludeStart("jqmBuildExclude", pragmas.jqmBuildExclude);
-//>>description: Displays a page as a modal dialog with inset appearance and overlay background
-//>>label: Dialogs
+//>>description: Styles a page as a modal dialog with inset appearance and overlay background
+//>>label: Dialog styling
 //>>group: Widgets
 //>>css.structure: ../css/structure/jquery.mobile.dialog.css
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
 define( [ "jquery",
-	"../jquery.mobile.widget",
+	"../widget",
 	"./page",
-	"../jquery.mobile.navigation" ], function( jQuery ) {
+	"../navigation" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, window, undefined ) {
 
@@ -120,7 +120,6 @@ $.widget( "mobile.page", $.mobile.page, {
 				.attr( "data-" + $.mobile.ns + "rel", "back" )
 				.text( text || this.options.closeBtnText || "" )
 				.prependTo( dst );
-			this._on( btn, { click: "close" } );
 		}
 
 		this._headerCloseButton = btn;

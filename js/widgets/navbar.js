@@ -5,7 +5,7 @@
 //>>css.structure: ../css/structure/jquery.mobile.navbar.css
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
-define( [ "jquery", "../jquery.mobile.widget", "../jquery.mobile.grid" ], function( jQuery ) {
+define( [ "jquery", "../widget", "../grid" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -18,7 +18,7 @@ $.widget( "mobile.navbar", {
 	_create: function() {
 
 		var $navbar = this.element,
-			$navbtns = $navbar.find( "a" ),
+			$navbtns = $navbar.find( "a, button" ),
 			iconpos = $navbtns.filter( ":jqmData(icon)" ).length ? this.options.iconpos : undefined;
 
 		$navbar.addClass( "ui-navbar" )

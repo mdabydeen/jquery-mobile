@@ -13,16 +13,16 @@
 
 define( [
 	"jquery",
-	"../jquery.mobile.links",
-	"../jquery.mobile.widget",
-	"../jquery.mobile.support",
+	"../links",
+	"../widget",
+	"../support",
 	"../events/navigate",
 	"../navigation/path",
 	"../navigation/history",
 	"../navigation/navigator",
 	"../navigation/method",
-	"../jquery.mobile.navigation",
-	"jquery.hashchange" ], function( jQuery ) {
+	"../animationComplete",
+	"../navigation" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -74,6 +74,14 @@ $.widget( "mobile.popup", {
 		history: !$.mobile.browser.oldIE
 	},
 
+	// When the user depresses the mouse/finger on an element inside the popup while the popup is
+	// open, we ignore resize events for a short while. This prevents #6961.
+	_handleDocumentVmousedown: function( theEvent ) {
+		if ( this._isOpen && $.contains( this._ui.container[ 0 ], theEvent.target ) ) {
+			this._ignoreResizeEvents();
+		}
+	},
+
 	_create: function() {
 		var theElement = this.element,
 			myId = theElement.attr( "id" ),
@@ -83,6 +91,10 @@ $.widget( "mobile.popup", {
 		// We can't do it in the option declarations because those are run before
 		// it is determined whether there shall be AJAX nav.
 		currentOptions.history = currentOptions.history && $.mobile.ajaxEnabled && $.mobile.hashListeningEnabled;
+
+		this._on( this.document, {
+			"vmousedown": "_handleDocumentVmousedown"
+		});
 
 		// Define instance variables
 		$.extend( this, {
@@ -285,10 +297,10 @@ $.widget( "mobile.popup", {
 
 		if ( targetElement !== ui.container[ 0 ] ) {
 			target = $( targetElement );
-			if ( 0 === target.parents().filter( ui.container[ 0 ] ).length ) {
-				$( this.document[ 0 ].activeElement ).one( "focus", function(/* theEvent */) {
-					target.blur();
-				});
+			if ( !$.contains( ui.container[ 0 ], targetElement ) ) {
+				$( this.document[ 0 ].activeElement ).one( "focus", $.proxy( function() {
+					this._safelyBlur( targetElement );
+				}, this ) );
 				ui.focusElement.focus();
 				theEvent.preventDefault();
 				theEvent.stopImmediatePropagation();
@@ -542,9 +554,9 @@ $.widget( "mobile.popup", {
 			}
 			if ( this._fallbackTransition ) {
 				this._ui.container
-					.animationComplete( $.proxy( args.prerequisites.container, "resolve" ) )
 					.addClass( args.containerClassToAdd )
-					.removeClass( args.classToRemove );
+					.removeClass( args.classToRemove )
+					.animationComplete( $.proxy( args.prerequisites.container, "resolve" ) );
 				return;
 			}
 		}
@@ -619,13 +631,28 @@ $.widget( "mobile.popup", {
 		}
 	},
 
+	_safelyBlur: function( currentElement ){
+		if ( currentElement !== this.window[ 0 ] &&
+			currentElement.nodeName.toLowerCase() !== "body" ) {
+				$( currentElement ).blur();
+		}
+	},
+
 	_openPrerequisitesComplete: function() {
-		var id = this.element.attr( "id" );
+		var id = this.element.attr( "id" ),
+			firstFocus = this._ui.container.find( ":focusable" ).first();
 
 		this._ui.container.addClass( "ui-popup-active" );
 		this._isOpen = true;
 		this._resizeScreen();
-		this._ui.container.attr( "tabindex", "0" ).focus();
+
+		// Check to see if currElement is not a child of the container.  If it's not, blur
+		if ( !$.contains( this._ui.container[ 0 ], this.document[ 0 ].activeElement ) ) {
+			this._safelyBlur( this.document[ 0 ].activeElement );
+		}
+		if ( firstFocus.length > 0 ) {
+			this._ui.focusElement = firstFocus;
+		}
 		this._ignoreResizeEvents();
 		if ( id ) {
 			this.document.find( "[aria-haspopup='true'][aria-owns='" +  id + "']" ).attr( "aria-expanded", true );
@@ -709,8 +736,6 @@ $.widget( "mobile.popup", {
 	_closePrerequisitesDone: function() {
 		var container = this._ui.container,
 			id = this.element.attr( "id" );
-
-		container.removeAttr( "tabindex" );
 
 		// remove the global mutex for popups
 		$.mobile.popup.active = undefined;
@@ -889,11 +914,6 @@ $.widget( "mobile.popup", {
 			url = url + (url.indexOf( "#" ) > -1 ? hashkey : "#" + hashkey);
 		} else {
 			url = $.mobile.path.parseLocation().hash + hashkey;
-		}
-
-		// Tack on an extra hashkey if this is the first page and we've just reconstructed the initial hash
-		if ( urlHistory.activeIndex === 0 && url === urlHistory.initialDst ) {
-			url += hashkey;
 		}
 
 		// swallow the the initial navigation event, and bind for the next

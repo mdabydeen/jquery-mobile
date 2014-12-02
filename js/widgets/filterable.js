@@ -4,8 +4,10 @@
 //>>group: Widgets
 //>>css.structure: ../css/structure/jquery.mobile.filterable.css
 
-define( [ "jquery",
-	"jquery.mobile.widget" ], function( jQuery ) {
+define( [
+	"jquery",
+	"../widget"
+], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 
@@ -60,7 +62,9 @@ $.widget( "mobile.filterable", {
 			}
 
 			this._timer = this._delay( function() {
-				this._trigger( "beforefilter", "beforefilter", { input: search } );
+				if ( this._trigger( "beforefilter", null, { input: search } ) === false ) {
+					return false;
+				}
 
 				// Change val as lastval for next execution
 				search[ 0 ].setAttribute( "data-" + $.mobile.ns + "lastval", val );
@@ -108,13 +112,18 @@ $.widget( "mobile.filterable", {
 		// If nothing is hidden, then the decision whether to hide or show the items
 		// is based on the "filterReveal" option.
 		if ( hide.length === 0 ) {
-			filterItems[ opts.filterReveal ? "addClass" : "removeClass" ]( "ui-screen-hidden" );
+			filterItems[ ( opts.filterReveal && val.length === 0 ) ?
+				"addClass" : "removeClass" ]( "ui-screen-hidden" );
 		} else {
 			$( hide ).addClass( "ui-screen-hidden" );
 			$( show ).removeClass( "ui-screen-hidden" );
 		}
 
 		this._refreshChildWidget();
+
+		this._trigger( "filter", null, {
+			items: filterItems
+		});
 	},
 
 	// The Default implementation of _refreshChildWidget attempts to call
@@ -155,6 +164,8 @@ $.widget( "mobile.filterable", {
 				this.document.find( selector );
 
 			this._on( search, {
+				keydown: "_onKeyDown",
+				keypress: "_onKeyPress",
 				keyup: "_onKeyUp",
 				change: "_onKeyUp",
 				input: "_onKeyUp"
@@ -162,6 +173,21 @@ $.widget( "mobile.filterable", {
 		}
 
 		this._search = search;
+	},
+
+	// Prevent form submission
+	_onKeyDown: function( event ) {
+		if ( event.keyCode === $.ui.keyCode.ENTER ) {
+			event.preventDefault();
+			this._preventKeyPress = true;
+		}
+	},
+
+	_onKeyPress: function( event ) {
+		if ( this._preventKeyPress ) {
+			event.preventDefault();
+			this._preventKeyPress = false;
+		}
 	},
 
 	_setOptions: function( options ) {

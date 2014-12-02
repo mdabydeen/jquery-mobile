@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 </head>
@@ -24,11 +24,9 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Pages</h1>
+		<h1>Pages <a href="http://api.jquerymobile.com/page/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
-		<p>
-				The page is the primary unit of interaction in jQuery Mobile and is used to group content into logical views that can be animated in and out of view with page transitions. A HTML document may start with a single "page" and the AJAX navigation system will load additional pages on demand into the DOM as users navigate around. Alternatively, a HTML document can be built with multiple "pages" inside it and the framework will transition between these local views with no need to request content from the server.
-			</p>
+		<p>The page is the primary unit of interaction in jQuery Mobile and is used to group content into logical views that can be animated in and out of view with page transitions. A HTML document may start with a single "page" and the Ajax navigation system will load additional pages on demand into the DOM as users navigate around. Alternatively, a HTML document can be built with multiple "pages" inside it and the framework will transition between these local views with no need to request content from the server.</p>
 
 		<h2>Mobile page structure</h2>
 
@@ -75,19 +73,19 @@
 &lt;/div&gt;
 </code></pre>
 
-		<p>Within the "page" container, any valid HTML markup can be used, but for typical pages in jQuery Mobile, the immediate children of a "page" are divs with data-roles of <code>"header"</code>, <code>"content"</code>, and <code>"footer"</code>.</p>
+		<p>Within the "page" container, any valid HTML markup can be used, but for typical pages in jQuery Mobile, the immediate children of a "page" are divs with <code>data-role="header"</code>, <code>class="ui-content"</code>, and <code>data-role="footer"</code>.</p>
 
 <pre><code>
 &lt;div data-role="page"&gt;
 	&lt;div data-role="header"&gt;...&lt;/div&gt;
 	&lt;div role="main" class="ui-content"&gt;...&lt;/div&gt;
 	&lt;div data-role="footer"&gt;...&lt;/div&gt;
-&lt;/div&gt;</span>
+&lt;/div&gt;
 </code></pre>
 
-<h2>Putting it together: Basic single page template</h2>
+		<h2>Putting it together: Basic single page template</h2>
 
-<p>Putting it all together, this is the standard boilerplate page template you should start with on a project: </p>
+		<p>Putting it all together, this is the standard boilerplate page template you should start with on a project: </p>
 
 <pre><code>
 &lt;!DOCTYPE html&gt;
@@ -97,9 +95,9 @@
 
 	&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
 
-	&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/1.4.0-alpha.2/jquery.mobile-1.4.0-alpha.2.min.css&quot; /&gt;
-	&lt;script src=&quot;http://code.jquery.com/jquery-1.9.1.min.js&quot;&gt;&lt;/script&gt;
-	&lt;script src=&quot;http://code.jquery.com/mobile/1.4.0-alpha.2/jquery.mobile-1.4.0-alpha.2.min.js&quot;&gt;&lt;/script&gt;
+	&lt;link rel=&quot;stylesheet&quot; href=&quot;http://code.jquery.com/mobile/[version]/jquery.mobile-[version].min.css&quot; /&gt;
+	&lt;script src=&quot;http://code.jquery.com/jquery-[version].min.js&quot;&gt;&lt;/script&gt;
+	&lt;script src=&quot;http://code.jquery.com/mobile/[version]/jquery.mobile-[version].min.js&quot;&gt;&lt;/script&gt;
 &lt;/head&gt;
 &lt;body&gt;
 
@@ -109,7 +107,7 @@
 		&lt;h1&gt;Page Title&lt;/h1&gt;
 	&lt;/div&gt;&lt;!-- /header --&gt;
 
-	&lt;div data-role=&quot;content&quot;&gt;
+	&lt;div role=&quot;main&quot; class=&quot;ui-content&quot;&gt;
 		&lt;p&gt;Page content goes here.&lt;/p&gt;
 	&lt;/div&gt;&lt;!-- /content --&gt;
 
@@ -140,7 +138,7 @@
 		&lt;h1&gt;Foo&lt;/h1&gt;
 	&lt;/div&gt;&lt;!-- /header --&gt;
 
-	&lt;div data-role=&quot;content&quot;&gt;
+	&lt;div role=&quot;main&quot; class=&quot;ui-content&quot;&gt;
 		&lt;p&gt;I&#x27;m first in the source order so I&#x27;m shown as the page.&lt;/p&gt;
 		&lt;p&gt;View internal page called &lt;a href=&quot;#bar&quot;&gt;bar&lt;/a&gt;&lt;/p&gt;
 	&lt;/div&gt;&lt;!-- /content --&gt;
@@ -157,7 +155,7 @@
 		&lt;h1&gt;Bar&lt;/h1&gt;
 	&lt;/div&gt;&lt;!-- /header --&gt;
 
-	&lt;div data-role=&quot;content&quot;&gt;
+	&lt;div role=&quot;main&quot; class=&quot;ui-content&quot;&gt;
 		&lt;p&gt;I&#x27;m the second in the source order so I&#x27;m hidden when the page loads. I&#x27;m just shown if a link that references my id is beeing clicked.&lt;/p&gt;
 		&lt;p&gt;&lt;a href=&quot;#foo&quot;&gt;Back to foo&lt;/a&gt;&lt;/p&gt;
 	&lt;/div&gt;&lt;!-- /content --&gt;
@@ -171,37 +169,36 @@
 
 		<a href="../pages-multi-page/index.html" data-ajax="false" class="ui-btn ui-shadow ui-corner-all ui-btn-inline ui-mini ui-icon-arrow-r ui-btn-icon-right">View multi-page template</a>
 
-		<p>PLEASE NOTE: Since we are using the hash to track navigation history for all the AJAX "pages", it's not currently possible to deep link to an anchor (<code>index.html#foo</code>) on a page in jQuery Mobile, because the framework will look for a "page" with an <code>id</code> of <code>#foo</code> instead of the native behavior of scrolling to the content with that <code>id</code>.</p>
+		<p>PLEASE NOTE: Since we are using the hash to track navigation history for all the Ajax "pages", it's not currently possible to deep link to an anchor (<code>index.html#foo</code>) on a page in jQuery Mobile, because the framework will look for a "page" with an <code>id</code> of <code>#foo</code> instead of the native behavior of scrolling to the content with that <code>id</code>.</p>
 
 		<p>The <code>id</code> attribute of all your elements must be not only unique on a given page, but also unique across the pages in a site. This is because jQuery Mobile's single-page navigation model allows many different "pages" to be present in the DOM at the same time. This also applies when using a multi-page template, since all "pages" on the template are loaded at once.</p>
 
-	<h2>Conventions, not requirements</h2>
+		<h2>Conventions, not requirements</h2>
 
-	<p>Although the page structure outlined above is a recommended approach for a standard web app built with jQuery Mobile, the framework is very flexible with document structure.
-	The page, header, content, and footer data-role elements are optional and are mostly helpful for providing some basic formatting and structure.
-	The page wrapper that used to be required for auto-initialization to work is now optional for single page documents, so there isn't any required markup at all.
-	For a web page with a custom layout, all of these structural elements can be omitted and the AJAX navigation and all widgets will work just like they do in the boilerplate structure.
-	Behind the scenes, the framework will inject the page wrapper if it's not included in the markup because it's needed for managing pages, but the starting markup can now be extremely simple. </p>
+		<p>Although the page structure outlined above is a recommended approach for a standard web app built with jQuery Mobile, the framework is very flexible with document structure.
+		The page, header, content, and footer data-role elements are optional and are mostly helpful for providing some basic formatting and structure.
+		The page wrapper that used to be required for auto-initialization to work is now optional for single page documents, so there isn't any required markup at all.
+		For a web page with a custom layout, all of these structural elements can be omitted and the Ajax navigation and all widgets will work just like they do in the boilerplate structure.
+		Behind the scenes, the framework will inject the page wrapper if it's not included in the markup because it's needed for managing pages, but the starting markup can now be extremely simple.</p>
 
-	<p><strong>Note:</strong> In a multi-page setup, you are required to have page wrappers in your markup in order to group the content into multiple pages.</p>
+		<p><strong>Note:</strong> In a multi-page setup, you are required to have page wrappers in your markup in order to group the content into multiple pages.</p>
 
-	<p><strong>Also Note:</strong> If your body contains no <code>data-role="page"</code> divs, jQuery Mobile wraps the entire contents of the body within a page div as explained above.
-	jQuery Mobile is using jQuery's <code>wrapAll()</code> method to do this which looks for any script tags inside the content being wrapped, and loads each script source via XHR.
-	If scripts are present in the body, the browser ends up loading them twice.
-	We therefore strongly recommend that jQuery Mobile documents with scripts in their body also contain a <code>div</code> with <code>data-role="page"</code>.
-	</p>
+		<p><strong>Also Note:</strong> If your body contains no <code>data-role="page"</code> divs, jQuery Mobile wraps the entire contents of the body within a page div as explained above.
+		jQuery Mobile is using jQuery's <code>wrapAll()</code> method to do this which looks for any script tags inside the content being wrapped, and loads each script source via XHR.
+		If scripts are present in the body, the browser ends up loading them twice.
+		We therefore strongly recommend that jQuery Mobile documents with scripts in their body also contain a <code>div</code> with <code>data-role="page"</code>.</p>
 
-	<h2>Prefetching pages</h2>
+		<h2>Prefetching pages</h2>
 
-	<p>When using single-page templates, you can prefetch pages into the DOM so that they're available instantly when the user visits them. To prefetch a page, add the <code>data-prefetch</code> attribute to a link that points to the page. jQuery Mobile then loads the target page in the background after the primary page has loaded and the <code>pagecreate</code> event has triggered.
+		<p>When using single-page templates, you can prefetch pages into the DOM so that they're available instantly when the user visits them. To prefetch a page, add the <code>data-prefetch</code> attribute to a link that points to the page. jQuery Mobile then loads the target page in the background after the primary page has loaded and the <code>pagecreate</code> event has triggered.</p>
 
-	<div data-demo-html="true">
+		<div data-demo-html="true">
 
-		<a href="../pages-dialog/dialog-alt.html" data-prefetch="true">This link will prefetch the page</a>
+			<a href="../pages-dialog/dialog-alt.html" data-prefetch="true">This link will prefetch the page</a>
 
-	</div><!--/demo-html -->
+		</div><!--/demo-html -->
 
-  <p>Alternatively, you can prefetch a page programmatically using the pagecontainer widget's <code>load()</code> method:</p>
+  		<p>Alternatively, you can prefetch a page programmatically using the pagecontainer widget's <code>load()</code> method:</p>
 
 <pre><code>
 $( ":mobile-pagecontainer" ).pagecontainer( "load", <var>pageUrl</var>, { showLoadMsg: false } );
@@ -210,7 +207,7 @@ $( ":mobile-pagecontainer" ).pagecontainer( "load", <var>pageUrl</var>, { showLo
 		<h2>DOM Cache</h2>
 
 		<p>Keeping lots of pages in the DOM quickly fills the browser's memory, and can cause some mobile browsers to slow down or even crash. jQuery Mobile has a simple mechanism to keep the DOM tidy. </p>
-		<p>Whenever it loads a page via AJAX, it flags the page to be removed from the DOM when you navigate away from it later (technically, on the <code>pagehide</code> event). If you revisit a removed page, the browser may be able to retrieve the page's HTML file from its cache. If not, it re-fetches the file from the server. (In the case of nested listviews, jQuery Mobile removes all the pages that make up the nested list once you navigate to a page that's not part of the list.)</p>
+		<p>Whenever it loads a page via Ajax, it flags the page to be removed from the DOM when you navigate away from it later (technically, on the <code>pagehide</code> event). If you revisit a removed page, the browser may be able to retrieve the page's HTML file from its cache. If not, it re-fetches the file from the server. (In the case of nested listviews, jQuery Mobile removes all the pages that make up the nested list once you navigate to a page that's not part of the list.)</p>
 
 		<p>If you prefer, you can tell jQuery Mobile to keep previously-visited pages in the DOM instead of removing them. This lets you cache pages so that they're available instantly if the user returns to them.</p>
 
@@ -226,7 +223,7 @@ $.mobile.page.prototype.options.domCache = true;
 <var>pageContainerElement</var>.page({ domCache: true });
 </code></pre>
 
-		<p>Note that the contents of the first page isn't removed from the DOM, only pages loaded in via AJAX. Pages inside a multi-page template aren't affected by this feature at all - jQuery Mobile only removes pages loaded via AJAX.</p>
+		<p>Note that the contents of the first page isn't removed from the DOM, only pages loaded in via Ajax. Pages inside a multi-page template aren't affected by this feature at all - jQuery Mobile only removes pages loaded via Ajax.</p>
 
 	</div><!-- /content -->
 
@@ -234,7 +231,7 @@ $.mobile.page.prototype.options.domCache = true;
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

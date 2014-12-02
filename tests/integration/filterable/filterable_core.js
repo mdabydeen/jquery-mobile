@@ -67,6 +67,29 @@
 		], 500 );
 	});
 
+	asyncTest( "Filter won't run when preventing default on 'filterablebeforefilter'", function() {
+		expect( 1 );
+
+		var input = $( "#test-prevent-default-handler" ),
+			listview = $( "#test-prevent-default-signal-emission" );
+
+		listview.on( "filterablebeforefilter.theEventIsPrevented", function (e) {
+			e.preventDefault();
+		});
+
+		$.testHelper.sequence([
+			function() {
+				input.val( "a" ).trigger( "change" );
+			},
+			function() {
+				deepEqual( listview.children( ".ui-screen-hidden" ).length, 0,
+					"No children are hidden." );
+				listview.off( "filterablebeforefilter.theEventIsPrevented" );
+			},
+			start
+		], 500);
+	});
+
 	asyncTest( "filterCallback and filterReveal can be altered after widget creation", function(){
 		var filterable = $( "#custom-callback-listview" ),
 			input = $( "#custom-callback-listview-input" ),
@@ -306,6 +329,37 @@
 				start();
 			}
 		], 500 );
+	});
+
+	module( "Filter widget backwards compatibility" );
+
+	asyncTest( "Triggering 'filterablebeforefilter' on a filtered listview also triggers 'listviewbeforefilter'", function() {
+		expect( 2 );
+
+		var input = $( "#test-backcompat-signal-emission-input" ),
+			list = $( "#test-backcompat-signal-emission" ),
+			eventNs = ".backcompatEventIsFiring";
+
+		$.testHelper.detailedEventCascade([
+			function() {
+				input.val( "a" ).trigger( "change" );
+			},
+			{
+				filterablebeforefilter: {
+					src: list,
+					event: "filterablebeforefilter" + eventNs + "1"
+				},
+				listviewbeforefilter: {
+					src: list,
+					event: "listviewbeforefilter" + eventNs + "1"
+				}
+			},
+			function( result ) {
+				deepEqual( result.filterablebeforefilter.timedOut, false, "Received 'filterablebeforefilter'" );
+				deepEqual( result.listviewbeforefilter.timedOut, false, "Received 'listviewbeforefilter'" );
+				start();
+			}
+		]);
 	});
 
 })(jQuery);

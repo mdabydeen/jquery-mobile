@@ -3,7 +3,7 @@
 //>>label: Page Creation
 //>>group: Core
 
-define( [ "jquery", "../jquery.mobile.widget", "../jquery.mobile.core" ], function( jQuery ) {
+define( [ "jquery", "../widget", "../core" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
 $.mobile.widgets = {};
@@ -131,7 +131,7 @@ $.widget( "mobile.page", {
 
 	_setOptions: function( o ) {
 		if ( o.theme !== undefined ) {
-			this.element.removeClass( "ui-body-" + this.options.theme ).addClass( "ui-body-" + o.theme );
+			this.element.removeClass( "ui-page-theme-" + this.options.theme ).addClass( "ui-page-theme-" + o.theme );
 		}
 
 		if ( o.contentTheme !== undefined ) {

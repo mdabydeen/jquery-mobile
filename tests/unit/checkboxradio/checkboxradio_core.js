@@ -3,6 +3,32 @@
  */
 (function($){
 	module( 'jquery.mobile.forms.checkboxradio.js' );
+	test( "Checkbox is made mini when ui-mini is among wrapper classes", function() {
+		var widget = $( "#wrapper-class-mini" );
+
+		deepEqual( widget.checkboxradio( "option", "mini" ), false,
+			"Checkboxradio option mini is false" );
+		deepEqual( widget.parent().hasClass( "ui-mini" ),
+		true,
+		"Widget has class ui-mini" );
+	});
+
+	test( "Programmatic click on radio input correctly updates group", function() {
+		var first = $( "#programmatic-click-test input" ).eq( 0 ),
+			last = $( "#programmatic-click-test input" ).eq( 2 );
+
+		last.click().checkboxradio( "refresh" );
+		deepEqual( first.prop( "checked" ), false, "First checkboxradio prop is false" );
+		deepEqual( first.prev( "label" ).hasClass( "ui-radio-off" ), true,
+			"First label has class 'ui-radio-off'" );
+		deepEqual( first.prev( "label" ).hasClass( "ui-radio-on" ), false,
+			"First label does not have class 'ui-radio-on'" );
+		deepEqual( last.prop( "checked" ), true, "Last checkboxradio prop is true" );
+		deepEqual( last.prev( "label" ).hasClass( "ui-radio-off" ), false,
+			"Last label does not have class 'ui-radio-off'" );
+		deepEqual( last.prev( "label" ).hasClass( "ui-radio-on" ), true,
+			"First label has class 'ui-radio-on'" );
+	});
 
 	test( "widget with weird label is created successfully", function() {
 		var elem = $( "#chk\\[\\'3\\'\\]-1" );
@@ -10,26 +36,43 @@
 		ok( elem.siblings( "label[for='chk\\[\\'3\\'\\]-1']" ).length === 1, "element has exactly one sibling of the form label[for='chk[\'3\']-1']" );
 	});
 
-	test( "widget can be disabled and enabled", function(){
-		var input = $( "#checkbox-1" ),
-			button = input.parent().find( ".ui-btn" );
+	function testEnableDisable( theInput, theMethod ) {
+		var button = theInput.parent().find( ".ui-btn" );
 
-		input.checkboxradio( "disable" );
-		input.checkboxradio( "enable" );
-		ok( !input.prop("disabled"), "start input as enabled" );
-		ok( !input.parent().hasClass( "ui-state-disabled" ), "no disabled styles" );
-		ok( !input.prop("checked"), "not checked before click" );
+		theMethod( theInput, true );
+		theMethod( theInput, false );
+		ok( !theInput.prop("disabled"), "start input as enabled" );
+		ok( !theInput.parent().hasClass( "ui-state-disabled" ), "no disabled styles" );
+		ok( !theInput.prop("checked"), "not checked before click" );
 		button.trigger( "click" );
-		ok( input.prop("checked"), "checked after click" );
+		ok( theInput.prop("checked"), "checked after click" );
 		ok( button.hasClass( "ui-checkbox-on" ), "active styles after click" );
 		button.trigger( "click" );
-		input.checkboxradio( "disable" );
-		ok( input.prop( "disabled" ), "input disabled" );
-		ok( input.parent().hasClass( "ui-state-disabled" ), "disabled styles" );
-		ok( !input.prop( "checked" ), "not checked before click" );
+		theMethod( theInput, true );
+		ok( theInput.prop( "disabled" ), "input disabled" );
+		ok( theInput.parent().hasClass( "ui-state-disabled" ), "disabled styles" );
+		ok( !theInput.prop( "checked" ), "not checked before click" );
 		button.trigger( "click" );
-		ok( !input.prop( "checked" ), "not checked after click" );
+		ok( !theInput.prop( "checked" ), "not checked after click" );
 		ok( !button.hasClass( "ui-checkbox-on" ), "no active styles after click" );
+	}
+
+	test( "widget can be disabled and enabled via enable()/disable() method", function(){
+		testEnableDisable( $( "#checkbox-disabled-test-1" ), function( theInput, isDisabled ) {
+			theInput.checkboxradio( isDisabled ? "disable" : "enable" );
+		});
+	});
+
+	test( "widget can be disabled and enabled via option 'disabled'", function(){
+		testEnableDisable( $( "#checkbox-disabled-test-2" ), function( theInput, isDisabled ) {
+			theInput.checkboxradio( "option", "disabled", isDisabled );
+		});
+	});
+
+	test( "widget can be disabled and enabled via prop + refresh()", function(){
+		testEnableDisable( $( "#checkbox-disabled-test-3" ), function( theInput, isDisabled ) {
+			theInput.prop( "disabled", isDisabled ).checkboxradio( "refresh" );
+		});
 	});
 
 	test( "clicking a checkbox within a controlgroup does not affect checkboxes with the same name in the same controlgroup", function(){

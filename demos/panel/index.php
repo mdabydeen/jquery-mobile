@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700">
 	<link rel="stylesheet" href="../../css/themes/default/jquery.mobile.css">
 	<link rel="stylesheet" href="../_assets/css/jqm-demos.css">
-	<script src="../../js/jquery.js"></script>
+	<script src="../../external/jquery/jquery.js"></script>
 	<script src="../_assets/js/"></script>
 	<script src="../../js/"></script>
 </head>
 <body>
-<div data-role="page" class="jqm-demos" data-quicklinks="true">
+<div data-role="page" class="jqm-demos jqm-panel-page" data-quicklinks="true">
 
 	<!-- default panel  -->
 	<div data-role="panel" id="defaultpanel">
@@ -36,7 +36,7 @@
 
 	<div role="main" class="ui-content jqm-content">
 
-		<h1>Panel</h1>
+		<h1>Panel <a href="http://api.jquerymobile.com/panel/" class="jqm-api-docs-link ui-btn ui-btn-icon-right ui-icon-carat-r ui-nodisc-icon ui-alt-icon ui-btn-inline ui-corner-all ui-mini">API</a></h1>
 
 		<p>Flexible by design, panels can be used for navigation, forms, inspectors and more.</p>
 
@@ -80,7 +80,7 @@
 
 		<h2>Panels outside pages</h2>
 
-		<p>If you want to use the same panel on multiple pages you can place the markup outside the page. See <a href="../panel/external/">external panels</a></p>
+		<p>If you want to use the same panel on multiple pages you can place the markup outside the page. See <a href="../panel-external/" data-ajax="false">external panels</a>.</p>
 
 		<h2>Dynamic content</h2>
 
@@ -180,13 +180,18 @@ $( "#mypanel" ).trigger( "updatelayout" );
 
 		<p>Included in the widget styles is a breakpoint preset for this behavior that kicks in at 55em (880px). This breakpoint is not applied by default to make it easier for you to write custom breakpoints that work best for your content and design. To apply the breakpoint preset, add the <code>ui-responsive-panel</code> class to the page or, in case you use external panels and/or fixed toolbars, to the page container (<code>body</code>). See an example of a <a href="../panel-responsive/" data-ajax="false">responsive panel</a> page.</p>
 
+		<div class="jqm-navmenu-panel jqm-panel-page-nav">
+			<ul class="jqm-list ui-alt-icon ui-nodisc-icon">
+				<?php include( '../jqm-contents.php' ); ?>
+			</ul>
+		</div>
 	</div><!-- /content -->
 
 	<?php include( '../jqm-navmenu.php' ); ?>
 
 	<div data-role="footer" data-position="fixed" data-tap-toggle="false" class="jqm-footer">
 		<p>jQuery Mobile Demos version <span class="jqm-version"></span></p>
-		<p>Copyright 2013 The jQuery Foundation</p>
+		<p>Copyright 2014 The jQuery Foundation</p>
 	</div><!-- /footer -->
 
 <?php include( '../jqm-search.php' ); ?>

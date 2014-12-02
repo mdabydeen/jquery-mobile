@@ -6,9 +6,10 @@
 //>>css.theme: ../css/themes/default/jquery.mobile.theme.css
 
 define( [ "jquery",
-	"../../jquery.mobile.core",
-	"../../jquery.mobile.widget",
+	"../../core",
+	"../../widget",
 	"./textinput",
+	"../../vmouse",
 	"./reset" ], function( jQuery ) {
 //>>excludeEnd("jqmBuildExclude");
 (function( $, undefined ) {
@@ -513,7 +514,7 @@ $.widget( "mobile.slider", $.extend( {
 
 			// update control"s value
 			if ( isInput ) {
-				valueChanged = control.val() !== newval;
+				valueChanged = parseFloat( control.val() ) !== newval;
 				control.val( newval );
 			} else {
 				valueChanged = control[ 0 ].selectedIndex !== newval;
@@ -581,7 +582,11 @@ $.widget( "mobile.slider", $.extend( {
 	_setDisabled: function( value ) {
 		value = !!value;
 		this.element.prop( "disabled", value );
-		this.slider.toggleClass( "ui-state-disabled" ).attr( "aria-disabled", value );
+		this.slider
+			.toggleClass( "ui-state-disabled", value )
+			.attr( "aria-disabled", value );
+
+		this.element.toggleClass( "ui-state-disabled", value );
 	}
 
 }, $.mobile.behaviors.formReset ) );
